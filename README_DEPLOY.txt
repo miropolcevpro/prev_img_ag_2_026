@@ -1,6 +1,18 @@
-Upload the contents of this archive to the backend/public root preserving folder structure.
-Required runtime files included:
-- paver-configurator-embed.js
+FINAL STABLE PACKAGE FOR ALL MAIN SCREENS
+
+Recommended Tilda snippet:
+<div id="paverConf2026"></div>
+<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final.js"></script>
+
+Runtime files included:
+- paver-configurator-embed-safe-template-adaptive-final.js
+- paver-configurator-embed.js (same latest file, compatibility alias)
+- forms.json
+- price_catalog.json
+- palettes_stonemix.json
+- palettes_colormix.json
+- palettes_mono.json
+- technologies.json
 - forms/
 - technologies/
 - forms2/
@@ -8,9 +20,5 @@ Required runtime files included:
 - colormix_preview/
 - mono_preview/
 - curb_preview/
-- forms.json
-- price_catalog.json
-- palettes_stonemix.json
-- palettes_colormix.json
-- palettes_mono.json
-- technologies.json
+
+Use the recommended current entrypoint above for the best adaptive behavior.
