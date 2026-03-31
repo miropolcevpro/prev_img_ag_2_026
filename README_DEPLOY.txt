@@ -1,29 +1,13 @@
-FINAL STABLE PACKAGE FOR ALL MAIN SCREENS
+Deploy package for paver configurator.
 
 Recommended Tilda snippet:
 <div id="paverConf2026"></div>
-<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js?v=20260331-2"></script>
 
-Runtime files included:
+Main runtime file:
+- paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js
+
+Compatibility aliases (same content):
+- paver-configurator-embed.js
 - paver-configurator-embed-safe-template-adaptive-final.js
-- paver-configurator-embed.js (same latest file, compatibility alias)
-- forms.json
-- price_catalog.json
-- palettes_stonemix.json
-- palettes_colormix.json
-- palettes_mono.json
-- technologies.json
-- forms/
-- technologies/
-- forms2/
-- stonemix_preview/
-- colormix_preview/
-- mono_preview/
-- curb_preview/
-
-Use the recommended current entrypoint above for the best adaptive behavior.
-
-
-Recommended Tilda include:
-<div id="paverConf2026"></div>
-<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final-pricefix-v2.js?v=20260313-30"></script>
+- paver-configurator-embed-safe-template-adaptive-final-pricefix.js
