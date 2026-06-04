@@ -2,7 +2,7 @@
   "meta": {
     "source": "РЕКОМЕНДОВАННЫЕ РОЗНИЧНЫЕ ЦЕНЫ ЗАВОДА «АКТИВ ГРУПП»",
     "vat_percent": 22,
-    "effective_from": "2026-01-01",
+    "effective_from": "2026-06-03",
     "unit_note": "цены указаны без учета доставки и тары; продажа от 1 поддона (плитка) / от 1 поддона (камень бортовой)"
   },
   "pavers": {
@@ -15,13 +15,13 @@
           {
             "mm": 60,
             "prices": {
-              "grey": 1062.4515,
-              "mono_color1": 1238.3406,
-              "mono_color2": 1371.5283,
-              "colormix_2": 1688.7387,
-              "colormix_3": 1836.1602,
-              "colormix_fakt": 1892.0787,
-              "stonemix": 2624.1027
+              "grey": 1097.25,
+              "mono_color1": 1278.9,
+              "mono_color2": 1416.45,
+              "colormix_2": 1744.05,
+              "colormix_3": 1896.3,
+              "colormix_fakt": 1954.05,
+              "stonemix": 2710.05
             },
             "packaging": {
               "pcs_per_pallet": "192\n240\n240\n336\n240",
@@ -39,13 +39,13 @@
           {
             "mm": 80,
             "prices": {
-              "grey": 1188.5223,
-              "mono_color1": 1435.5804,
-              "mono_color2": 1647.054,
-              "colormix_2": 2054.7507,
-              "colormix_3": 2230.6398,
-              "colormix_fakt": 2286.5583,
-              "stonemix": 3046.0332
+              "grey": 1227.45,
+              "mono_color1": 1482.6,
+              "mono_color2": 1701.0,
+              "colormix_2": 2122.05,
+              "colormix_3": 2303.7,
+              "colormix_fakt": 2361.45,
+              "stonemix": 3145.8
             },
             "packaging": {
               "pcs_per_pallet": 432,
@@ -63,12 +63,12 @@
           {
             "mm": 80,
             "prices": {
-              "grey": 1315.6098,
-              "mono_color1": 1554.5343,
+              "grey": 1358.7,
+              "mono_color1": 3134.45,
               "mono_color2": "по запросу",
               "colormix_2": "по запросу",
               "colormix_3": "по запросу",
-              "colormix_fakt": "по запросу",
+              "colormix_fakt": "-",
               "stonemix": "-"
             },
             "packaging": {
@@ -87,13 +87,13 @@
           {
             "mm": 60,
             "prices": {
-              "grey": 978.0654,
-              "mono_color1": 1168.1883,
-              "mono_color2": 1294.2591,
-              "colormix_2": 1547.4174,
-              "colormix_3": 1660.2711,
-              "colormix_fakt": 1808.7093,
-              "stonemix": 2392.2951
+              "grey": 1010.1,
+              "mono_color1": 1206.45,
+              "mono_color2": 1336.65,
+              "colormix_2": 1598.1,
+              "colormix_3": 1714.65,
+              "colormix_fakt": 1867.95,
+              "stonemix": 2470.65
             },
             "packaging": {
               "pcs_per_pallet": 840,
@@ -111,13 +111,13 @@
           {
             "mm": 80,
             "prices": {
-              "grey": 1554.5343,
-              "mono_color1": 1681.6218,
-              "mono_color2": 1885.9785,
-              "colormix_2": 2413.6458,
-              "colormix_3": 2561.0673,
-              "colormix_fakt": 2645.4534,
-              "stonemix": 3349.0098
+              "grey": 1605.45,
+              "mono_color1": 1736.7,
+              "mono_color2": 1947.75,
+              "colormix_2": 2492.7,
+              "colormix_3": 2644.95,
+              "colormix_fakt": 2732.1,
+              "stonemix": 3458.7
             },
             "packaging": {
               "pcs_per_pallet": 40,
@@ -135,13 +135,13 @@
           {
             "mm": 40,
             "prices": {
-              "grey": 766.5918,
-              "mono_color1": 900.7962,
-              "mono_color2": 992.2992,
-              "colormix_2": 1210.8897,
-              "colormix_3": 1301.376,
-              "colormix_fakt": 1414.2297,
-              "stonemix": 1730.4234
+              "grey": 791.7,
+              "mono_color1": 930.3,
+              "mono_color2": 1024.8,
+              "colormix_2": 1250.55,
+              "colormix_3": 1344.0,
+              "colormix_fakt": 1460.55,
+              "stonemix": 1787.1
             },
             "packaging": {
               "pcs_per_pallet": "160\n160\n160",
@@ -153,13 +153,13 @@
           {
             "mm": 60,
             "prices": {
-              "grey": 970.9485,
-              "mono_color1": 1168.1883,
-              "mono_color2": 1273.9251,
-              "colormix_2": 1576.9017,
-              "colormix_3": 1744.6572,
-              "colormix_fakt": 1780.2417,
-              "stonemix": 2336.3766
+              "grey": 1002.75,
+              "mono_color1": 1206.45,
+              "mono_color2": 1315.65,
+              "colormix_2": 1628.55,
+              "colormix_3": 1801.8,
+              "colormix_fakt": 1838.55,
+              "stonemix": 2412.9
             },
             "packaging": {
               "pcs_per_pallet": "120\n120\n120",
@@ -171,13 +171,13 @@
           {
             "mm": 80,
             "prices": {
-              "grey": 1188.5223,
-              "mono_color1": 1435.5804,
-              "mono_color2": 1647.054,
-              "colormix_2": 2054.7507,
-              "colormix_3": 2230.6398,
-              "colormix_fakt": 2286.5583,
-              "stonemix": 3046.0332
+              "grey": 1227.45,
+              "mono_color1": 1482.6,
+              "mono_color2": 1701.0,
+              "colormix_2": 2122.05,
+              "colormix_3": 2303.7,
+              "colormix_fakt": 2361.45,
+              "stonemix": 3145.8
             },
             "packaging": {
               "pcs_per_pallet": "90\n90\n90                  ",
@@ -195,13 +195,13 @@
           {
             "mm": 80,
             "prices": {
-              "grey": 1188.5223,
-              "mono_color1": 1435.5804,
-              "mono_color2": 1647.054,
-              "colormix_2": 2054.7507,
-              "colormix_3": 2230.6398,
-              "colormix_fakt": 2286.5583,
-              "stonemix": 3046.0332
+              "grey": 1227.45,
+              "mono_color1": 1482.6,
+              "mono_color2": 1701.0,
+              "colormix_2": 2122.05,
+              "colormix_3": 2303.7,
+              "colormix_fakt": 2361.45,
+              "stonemix": 3145.8
             },
             "packaging": {
               "pcs_per_pallet": 108,
@@ -219,13 +219,13 @@
           {
             "mm": 60,
             "prices": {
-              "grey": 1464.048,
-              "mono_color1": 1600.2858,
-              "mono_color2": 1741.6071,
-              "colormix_2": 2257.074,
-              "colormix_3": 2400.4287,
-              "colormix_fakt": 2503.1154,
-              "stonemix": 3037.8996
+              "grey": 1512.0,
+              "mono_color1": 1652.7,
+              "mono_color2": 1798.65,
+              "colormix_2": 2331.0,
+              "colormix_3": 2479.05,
+              "colormix_fakt": 2585.1,
+              "stonemix": 3137.4
             },
             "packaging": {
               "pcs_per_pallet": "12\n12\n12\n12\n12\n12",
@@ -243,13 +243,13 @@
           {
             "mm": 40,
             "prices": {
-              "grey": 766.5918,
-              "mono_color1": 900.7962,
-              "mono_color2": 992.2992,
-              "colormix_2": 1210.8897,
-              "colormix_3": 1301.376,
-              "colormix_fakt": 1414.2297,
-              "stonemix": 1730.4234
+              "grey": 791.7,
+              "mono_color1": 930.3,
+              "mono_color2": 1024.8,
+              "colormix_2": 1250.55,
+              "colormix_3": 1344.0,
+              "colormix_fakt": 1460.55,
+              "stonemix": 1787.1
             },
             "packaging": {
               "pcs_per_pallet": 768,
@@ -261,13 +261,13 @@
           {
             "mm": 60,
             "prices": {
-              "grey": 970.9485,
-              "mono_color1": 1168.1883,
-              "mono_color2": 1273.9251,
-              "colormix_2": 1576.9017,
-              "colormix_3": 1744.6572,
-              "colormix_fakt": 1780.2417,
-              "stonemix": 2336.3766
+              "grey": 1002.75,
+              "mono_color1": 1206.45,
+              "mono_color2": 1315.65,
+              "colormix_2": 1628.55,
+              "colormix_3": 1801.8,
+              "colormix_fakt": 1838.55,
+              "stonemix": 2412.9
             },
             "packaging": {
               "pcs_per_pallet": 576,
@@ -285,13 +285,13 @@
           {
             "mm": 40,
             "prices": {
-              "grey": 766.5918,
-              "mono_color1": 900.7962,
-              "mono_color2": 992.2992,
-              "colormix_2": 1210.8897,
-              "colormix_3": 1301.376,
-              "colormix_fakt": 1414.2297,
-              "stonemix": 1730.4234
+              "grey": 791.7,
+              "mono_color1": 930.3,
+              "mono_color2": 1024.8,
+              "colormix_2": 1250.55,
+              "colormix_3": 1344.0,
+              "colormix_fakt": 1460.55,
+              "stonemix": 1787.1
             },
             "packaging": {
               "pcs_per_pallet": "168\n112",
@@ -303,13 +303,13 @@
           {
             "mm": 60,
             "prices": {
-              "grey": 970.9485,
-              "mono_color1": 1168.1883,
-              "mono_color2": 1273.9251,
-              "colormix_2": 1576.9017,
-              "colormix_3": 1744.6572,
-              "colormix_fakt": 1780.2417,
-              "stonemix": 2336.3766
+              "grey": 1002.75,
+              "mono_color1": 1206.45,
+              "mono_color2": 1315.65,
+              "colormix_2": 1628.55,
+              "colormix_3": 1801.8,
+              "colormix_fakt": 1838.55,
+              "stonemix": 2412.9
             },
             "packaging": {
               "pcs_per_pallet": "144\n96",
@@ -327,13 +327,13 @@
           {
             "mm": 60,
             "prices": {
-              "grey": 970.9485,
-              "mono_color1": 1168.1883,
-              "mono_color2": 1273.9251,
-              "colormix_2": 1576.9017,
-              "colormix_3": 1744.6572,
-              "colormix_fakt": 1780.2417,
-              "stonemix": 2336.3766
+              "grey": 1002.75,
+              "mono_color1": 1206.45,
+              "mono_color2": 1315.65,
+              "colormix_2": 1628.55,
+              "colormix_3": 1801.8,
+              "colormix_fakt": 1838.55,
+              "stonemix": 2412.9
             },
             "packaging": {
               "pcs_per_pallet": 384,
@@ -351,13 +351,13 @@
           {
             "mm": 60,
             "prices": {
-              "grey": 1005.5163,
-              "mono_color1": 1203.7728,
-              "mono_color2": 1322.7267,
-              "colormix_2": 1611.4695,
-              "colormix_3": 1695.8556,
-              "colormix_fakt": 1850.394,
-              "stonemix": 2462.4474
+              "grey": 1038.45,
+              "mono_color1": 1243.2,
+              "mono_color2": 1366.05,
+              "colormix_2": 1664.25,
+              "colormix_3": 1751.4,
+              "colormix_fakt": 1911.0,
+              "stonemix": 2543.1
             },
             "packaging": {
               "pcs_per_pallet": "180\n252\n252",
@@ -378,13 +378,13 @@
         "name": "БР 100.20.8 1000х200х80",
         "width_mm": 80,
         "prices": {
-          "grey": 331.4442,
-          "mono_color1": 471.7488,
-          "mono_color2": 485.9826,
-          "colormix_2": 527.6673,
-          "colormix_3": 556.1349,
-          "colormix_fakt": 583.5858,
-          "stonemix": 619.1703
+          "grey": 348.02,
+          "mono_color1": 495.34,
+          "mono_color2": 510.28,
+          "colormix_2": 554.05,
+          "colormix_3": 583.94,
+          "colormix_fakt": 612.77,
+          "stonemix": 650.13
         },
         "packaging": {
           "pcs_per_pallet": 36,
@@ -396,7 +396,7 @@
         "name": "БР 100.30.15 1000х300х150",
         "width_mm": 150,
         "prices": {
-          "grey": 752.358,
+          "grey": 789.98,
           "mono_color1": "по запросу",
           "mono_color2": "по запросу",
           "colormix_2": "по запросу",
@@ -414,7 +414,7 @@
         "name": "БР 100.30.18 1000х300х180",
         "width_mm": 180,
         "prices": {
-          "grey": 844.8777,
+          "grey": 887.12,
           "mono_color1": "по запросу",
           "mono_color2": "по запросу",
           "colormix_2": "по запросу",
