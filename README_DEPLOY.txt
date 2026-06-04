@@ -1,13 +1,10 @@
-Deploy package for paver configurator.
+DEPLOY ROOT PACKAGE — PRICEFIX 2026-06-04-2
 
-Recommended Tilda snippet:
+Загрузите содержимое этого архива в корень репозитория miropolcevpro/prev_img_ag_2_026.
+Обязательно замените JS-файл paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js.
+
+Tilda snippet:
 <div id="paverConf2026"></div>
-<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js?v=20260331-2"></script>
+<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js?v=20260604-2"></script>
 
-Main runtime file:
-- paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js
-
-Compatibility aliases (same content):
-- paver-configurator-embed.js
-- paver-configurator-embed-safe-template-adaptive-final.js
-- paver-configurator-embed-safe-template-adaptive-final-pricefix.js
+Исправление: новый прайс сохранён, логика расчёта не менялась. Устранена ошибка сборки script.text: вложенный INLINE_DATA теперь кодируется безопасно, включая многострочные значения упаковки.
