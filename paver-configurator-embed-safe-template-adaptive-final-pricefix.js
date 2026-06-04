@@ -1,6 +1,8 @@
 (function(){
-  if (window.__paverConfiguratorEmbedLoaded) return;
+  var EMBED_VERSION = 'discount20260604_4';
+  if (window.__paverConfiguratorEmbedLoaded && window.__paverConfiguratorEmbedVersion === EMBED_VERSION) return;
   window.__paverConfiguratorEmbedLoaded = true;
+  window.__paverConfiguratorEmbedVersion = EMBED_VERSION;
 
   var ROOT_ID = 'paverConf2026';
   var existing = document.getElementById(ROOT_ID);
@@ -15,7 +17,7 @@
   }
 
   existing.outerHTML = `<div id="paverConf2026" class="paverConf2026"
-  data-cdn="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/" data-assets-ver="discount20260604_3" data-cdn-commit="">
+  data-cdn="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/" data-assets-ver="discount20260604_4" data-cdn-commit="">
 
   <div class="paverConf2026__head">
     <div class="paverConf2026__title">Быстрый расчет стоимости</div>
