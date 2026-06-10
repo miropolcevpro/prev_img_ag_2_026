@@ -1,0 +1,152 @@
+{
+  "meta": {
+    "schema_version": "1.1.0",
+    "generated_at": "2026-06-10T00:00:00+02:00",
+    "description": "Runtime settings for paver configurator. Product prices are in price_catalog.json; logistics is prepared but disabled by default."
+  },
+  "pallet": {
+    "empty_pallet_price": 457.5,
+    "currency": "RUB",
+    "label": "Стоимость поддона",
+    "editable": true
+  },
+  "discounts": {
+    "enabled": true,
+    "volume_rules": {
+      "tile": {
+        "grey": [
+          {
+            "min": 200,
+            "pct": 0,
+            "label": "Прайс"
+          },
+          {
+            "min": 500,
+            "pct": 10,
+            "label": "Оптовая 10%"
+          },
+          {
+            "min": 1000,
+            "pct": 15,
+            "label": "Крупный опт 15%"
+          }
+        ],
+        "color": [
+          {
+            "min": 200,
+            "pct": 12,
+            "label": "Мелкий опт 12%"
+          },
+          {
+            "min": 500,
+            "pct": 13,
+            "label": "Оптовая 13%"
+          },
+          {
+            "min": 1000,
+            "pct": 20,
+            "label": "Крупный опт 20%"
+          }
+        ],
+        "mix": [
+          {
+            "min": 200,
+            "pct": 15,
+            "label": "Мелкий опт 15%"
+          },
+          {
+            "min": 500,
+            "pct": 18,
+            "label": "Оптовая 18%"
+          },
+          {
+            "min": 1000,
+            "pct": 22,
+            "label": "Крупный опт 22%"
+          }
+        ]
+      },
+      "poligonal": {
+        "grey": [
+          {
+            "min": 200,
+            "pct": 0,
+            "label": "Прайс"
+          },
+          {
+            "min": 500,
+            "pct": 2,
+            "label": "Оптовая 2%"
+          },
+          {
+            "min": 1000,
+            "pct": 5,
+            "label": "Крупный опт 5%"
+          }
+        ],
+        "color": [
+          {
+            "min": 200,
+            "pct": 2,
+            "label": "Мелкий опт 2%"
+          },
+          {
+            "min": 500,
+            "pct": 3,
+            "label": "Оптовая 3%"
+          },
+          {
+            "min": 1000,
+            "pct": 10,
+            "label": "Крупный опт 10%"
+          }
+        ],
+        "mix": [
+          {
+            "min": 200,
+            "pct": 5,
+            "label": "Мелкий опт 5%"
+          },
+          {
+            "min": 500,
+            "pct": 8,
+            "label": "Оптовая 8%"
+          },
+          {
+            "min": 1000,
+            "pct": 12,
+            "label": "Крупный опт 12%"
+          }
+        ]
+      },
+      "curb": {
+        "curb": [
+          {
+            "min": 400,
+            "pct": 15,
+            "label": "Мелкий опт 15%"
+          },
+          {
+            "min": 1000,
+            "pct": 18,
+            "label": "Оптовая 18%"
+          },
+          {
+            "min": 2000,
+            "pct": 24,
+            "label": "Крупный опт 24%"
+          }
+        ]
+      }
+    }
+  },
+  "logistics": {
+    "enabled": false,
+    "mode": "prepared_only",
+    "currency": "RUB",
+    "manual_adjustments_enabled": true,
+    "default_city": "",
+    "rules_file": "config/logistics_rules.json",
+    "note": "Логистика заложена структурно, но не участвует в текущем расчете до включения отдельного модуля."
+  }
+}

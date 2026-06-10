@@ -3,7 +3,10 @@
     "source": "РЕКОМЕНДОВАННЫЕ РОЗНИЧНЫЕ ЦЕНЫ ЗАВОДА «АКТИВ ГРУПП»",
     "vat_percent": 22,
     "effective_from": "2026-06-03",
-    "unit_note": "цены указаны без учета доставки и тары; продажа от 1 поддона (плитка) / от 1 поддона (камень бортовой)"
+    "unit_note": "цены указаны без учета доставки и тары; продажа от 1 поддона (плитка) / от 1 поддона (камень бортовой)",
+    "logistics_schema_version": "1.0.0",
+    "logistics_status": "prepared_not_active",
+    "logistics_note": "Logistics fields are informational until admin_settings.logistics.enabled=true and separate logistics module is connected."
   },
   "pavers": {
     "unit": "m2",
@@ -28,6 +31,15 @@
               "pcs_per_m2": "97,50\n107,40\n120,90\n136,70\n159,50 ",
               "m2_per_pallet": 10.2,
               "pallet_weight_kg": 1400.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 10.2,
+              "pallet_weight_kg": 1400.0,
+              "weight_per_unit_kg": 137.2549,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -52,6 +64,15 @@
               "pcs_per_m2": 50,
               "m2_per_pallet": 8.64,
               "pallet_weight_kg": 1610.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 8.64,
+              "pallet_weight_kg": 1610.0,
+              "weight_per_unit_kg": 186.3426,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -76,6 +97,15 @@
               "pcs_per_m2": 4.17,
               "m2_per_pallet": 9.6,
               "pallet_weight_kg": 1070.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 9.6,
+              "pallet_weight_kg": 1070.0,
+              "weight_per_unit_kg": 111.4583,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -100,6 +130,15 @@
               "pcs_per_m2": 75.06,
               "m2_per_pallet": 11.2,
               "pallet_weight_kg": 1430.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 11.2,
+              "pallet_weight_kg": 1430.0,
+              "weight_per_unit_kg": 127.6786,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -124,6 +163,15 @@
               "pcs_per_m2": 5.555555555555556,
               "m2_per_pallet": 7.2,
               "pallet_weight_kg": 1300.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 7.2,
+              "pallet_weight_kg": 1300.0,
+              "weight_per_unit_kg": 180.5556,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -148,6 +196,15 @@
               "pcs_per_m2": "39,06\n31,25\n26,04",
               "m2_per_pallet": 15.36,
               "pallet_weight_kg": 1475.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 15.36,
+              "pallet_weight_kg": 1475.0,
+              "weight_per_unit_kg": 96.0286,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           },
           {
@@ -166,6 +223,15 @@
               "pcs_per_m2": "39,06\n31,25\n26,04",
               "m2_per_pallet": 11.52,
               "pallet_weight_kg": 1560.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 11.52,
+              "pallet_weight_kg": 1560.0,
+              "weight_per_unit_kg": 135.4167,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           },
           {
@@ -184,6 +250,15 @@
               "pcs_per_m2": "39.06\n31.25\n26.04",
               "m2_per_pallet": 8.64,
               "pallet_weight_kg": 1610.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 8.64,
+              "pallet_weight_kg": 1610.0,
+              "weight_per_unit_kg": 186.3426,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -208,6 +283,15 @@
               "pcs_per_m2": 12.5,
               "m2_per_pallet": 8.64,
               "pallet_weight_kg": 1610.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 8.64,
+              "pallet_weight_kg": 1610.0,
+              "weight_per_unit_kg": 186.3426,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -232,6 +316,15 @@
               "pcs_per_m2": "9,92\n10,03\n17,35\n11,50\n11,42\n8,23",
               "m2_per_pallet": 6.65,
               "pallet_weight_kg": 930.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 6.65,
+              "pallet_weight_kg": 930.0,
+              "weight_per_unit_kg": 139.8496,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -256,6 +349,15 @@
               "pcs_per_m2": 50,
               "m2_per_pallet": 15.36,
               "pallet_weight_kg": 1475.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 15.36,
+              "pallet_weight_kg": 1475.0,
+              "weight_per_unit_kg": 96.0286,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           },
           {
@@ -274,6 +376,15 @@
               "pcs_per_m2": 50,
               "m2_per_pallet": 11.52,
               "pallet_weight_kg": 1560.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 11.52,
+              "pallet_weight_kg": 1560.0,
+              "weight_per_unit_kg": 135.4167,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -298,6 +409,15 @@
               "pcs_per_m2": "25\n16,7",
               "m2_per_pallet": 13.44,
               "pallet_weight_kg": 1290.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 13.44,
+              "pallet_weight_kg": 1290.0,
+              "weight_per_unit_kg": 95.9821,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           },
           {
@@ -316,6 +436,15 @@
               "pcs_per_m2": "25\n16,7",
               "m2_per_pallet": 11.52,
               "pallet_weight_kg": 1560.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 11.52,
+              "pallet_weight_kg": 1560.0,
+              "weight_per_unit_kg": 135.4167,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -340,6 +469,15 @@
               "pcs_per_m2": 33.33,
               "m2_per_pallet": 11.52,
               "pallet_weight_kg": 1560.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 11.52,
+              "pallet_weight_kg": 1560.0,
+              "weight_per_unit_kg": 135.4167,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -364,6 +502,15 @@
               "pcs_per_m2": "138,89\n69,44\n46,29",
               "m2_per_pallet": 10.37,
               "pallet_weight_kg": 1370.0
+            },
+            "logistics": {
+              "unit_for_logistics": "m2",
+              "units_per_pallet": 10.37,
+              "pallet_weight_kg": 1370.0,
+              "weight_per_unit_kg": 132.1119,
+              "volume_per_unit_m3": null,
+              "load_group": "paver_tile",
+              "enabled_for_future_logistics": true
             }
           }
         ]
@@ -389,6 +536,16 @@
         "packaging": {
           "pcs_per_pallet": 36,
           "pallet_weight_kg": 1340.0
+        },
+        "logistics": {
+          "unit_for_logistics": "meter",
+          "units_per_pallet": null,
+          "pcs_per_pallet": 36.0,
+          "pallet_weight_kg": 1340.0,
+          "weight_per_unit_kg": null,
+          "volume_per_unit_m3": null,
+          "load_group": "curbstone",
+          "enabled_for_future_logistics": true
         }
       },
       {
@@ -407,6 +564,16 @@
         "packaging": {
           "pcs_per_pallet": 15,
           "pallet_weight_kg": 1500.0
+        },
+        "logistics": {
+          "unit_for_logistics": "meter",
+          "units_per_pallet": null,
+          "pcs_per_pallet": 15.0,
+          "pallet_weight_kg": 1500.0,
+          "weight_per_unit_kg": null,
+          "volume_per_unit_m3": null,
+          "load_group": "curbstone",
+          "enabled_for_future_logistics": true
         }
       },
       {
@@ -425,6 +592,16 @@
         "packaging": {
           "pcs_per_pallet": 12,
           "pallet_weight_kg": 1450.0
+        },
+        "logistics": {
+          "unit_for_logistics": "meter",
+          "units_per_pallet": null,
+          "pcs_per_pallet": 12.0,
+          "pallet_weight_kg": 1450.0,
+          "weight_per_unit_kg": null,
+          "volume_per_unit_m3": null,
+          "load_group": "curbstone",
+          "enabled_for_future_logistics": true
         }
       }
     ]

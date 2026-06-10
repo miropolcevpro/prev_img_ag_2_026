@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "schema_version": "1.0.0",
+    "description": "Mapping between stable catalog IDs and rows in Stroytorg XLS price list. Parser uses aliases + thickness/width to match rows."
+  },
+  "columns": {
+    "prices": {
+      "grey": "Серый",
+      "mono_color1": "Цвет 1*",
+      "mono_color2": "Цвет 2*",
+      "colormix_2": "Колормикс (2 цвета)",
+      "colormix_3": "Колормикс (3 цвета)",
+      "colormix_fakt": "Фактурный колормикс",
+      "stonemix": "Стоунмикс"
+    }
+  },
+  "items": [
+    {
+      "sku": "paver::антика::60",
+      "type": "paver",
+      "catalog_id": "антика",
+      "name": "Антика",
+      "match": {
+        "aliases": [
+          "антика"
+        ],
+        "thickness_mm": 60
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::брусчатка::80",
+      "type": "paver",
+      "catalog_id": "брусчатка",
+      "name": "Брусчатка",
+      "match": {
+        "aliases": [
+          "брусчатка"
+        ],
+        "thickness_mm": 80
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::газонная_решетка::80",
+      "type": "paver",
+      "catalog_id": "газонная_решетка",
+      "name": "Газонная решетка",
+      "match": {
+        "aliases": [
+          "газонная решетка",
+          "газонная решётка"
+        ],
+        "thickness_mm": 80
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::классика::60",
+      "type": "paver",
+      "catalog_id": "классика",
+      "name": "Классика",
+      "match": {
+        "aliases": [
+          "классика"
+        ],
+        "thickness_mm": 60
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::мегаполис::80",
+      "type": "paver",
+      "catalog_id": "мегаполис",
+      "name": "Мегаполис",
+      "match": {
+        "aliases": [
+          "мегаполис"
+        ],
+        "thickness_mm": 80
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::новый_город::40",
+      "type": "paver",
+      "catalog_id": "новый_город",
+      "name": "Новый город",
+      "match": {
+        "aliases": [
+          "новый город"
+        ],
+        "thickness_mm": 40
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::новый_город::60",
+      "type": "paver",
+      "catalog_id": "новый_город",
+      "name": "Новый город",
+      "match": {
+        "aliases": [
+          "новый город"
+        ],
+        "thickness_mm": 60
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::новый_город::80",
+      "type": "paver",
+      "catalog_id": "новый_город",
+      "name": "Новый город",
+      "match": {
+        "aliases": [
+          "новый город"
+        ],
+        "thickness_mm": 80
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::палладио::80",
+      "type": "paver",
+      "catalog_id": "палладио",
+      "name": "Палладио",
+      "match": {
+        "aliases": [
+          "палладио"
+        ],
+        "thickness_mm": 80
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::полигональ::60",
+      "type": "paver",
+      "catalog_id": "полигональ",
+      "name": "Полигональ",
+      "match": {
+        "aliases": [
+          "полигональ"
+        ],
+        "thickness_mm": 60
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::променад_i::40",
+      "type": "paver",
+      "catalog_id": "променад_i",
+      "name": "Променад I",
+      "match": {
+        "aliases": [
+          "променад i",
+          "променад 1",
+          "променад i "
+        ],
+        "thickness_mm": 40
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::променад_i::60",
+      "type": "paver",
+      "catalog_id": "променад_i",
+      "name": "Променад I",
+      "match": {
+        "aliases": [
+          "променад i",
+          "променад 1",
+          "променад i "
+        ],
+        "thickness_mm": 60
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::променад_ii::40",
+      "type": "paver",
+      "catalog_id": "променад_ii",
+      "name": "Променад II",
+      "match": {
+        "aliases": [
+          "променад ii",
+          "променад 2"
+        ],
+        "thickness_mm": 40
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::променад_ii::60",
+      "type": "paver",
+      "catalog_id": "променад_ii",
+      "name": "Променад II",
+      "match": {
+        "aliases": [
+          "променад ii",
+          "променад 2"
+        ],
+        "thickness_mm": 60
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::ригель::60",
+      "type": "paver",
+      "catalog_id": "ригель",
+      "name": "Ригель",
+      "match": {
+        "aliases": [
+          "ригель"
+        ],
+        "thickness_mm": 60
+      },
+      "required": true
+    },
+    {
+      "sku": "paver::старый_город::60",
+      "type": "paver",
+      "catalog_id": "старый_город",
+      "name": "Старый город",
+      "match": {
+        "aliases": [
+          "старый город"
+        ],
+        "thickness_mm": 60
+      },
+      "required": true
+    },
+    {
+      "sku": "curbstone::бр_100.20.8_1000х200х80",
+      "type": "curbstone",
+      "catalog_id": "бр_100.20.8_1000х200х80",
+      "name": "БР 100.20.8 1000х200х80",
+      "match": {
+        "aliases": [
+          "БР 100.20.8",
+          "БР 100.20.8 1000х200х80"
+        ],
+        "width_mm": 80
+      },
+      "required": true
+    },
+    {
+      "sku": "curbstone::бр_100.30.15_1000х300х150",
+      "type": "curbstone",
+      "catalog_id": "бр_100.30.15_1000х300х150",
+      "name": "БР 100.30.15 1000х300х150",
+      "match": {
+        "aliases": [
+          "БР 100.30.15",
+          "БР 100.30.15 1000х300х150"
+        ],
+        "width_mm": 150
+      },
+      "required": true
+    },
+    {
+      "sku": "curbstone::бр_100.30.18_1000х300х180",
+      "type": "curbstone",
+      "catalog_id": "бр_100.30.18_1000х300х180",
+      "name": "БР 100.30.18 1000х300х180",
+      "match": {
+        "aliases": [
+          "БР 100.30.18",
+          "БР 100.30.18 1000х300х180"
+        ],
+        "width_mm": 180
+      },
+      "required": true
+    }
+  ]
+}
