@@ -83,7 +83,9 @@
     if (document.querySelector('link[data-paver-admin-css]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = new URL('price-admin.css', (document.currentScript && document.currentScript.src) || location.href).toString().replace('/price-admin.js','/price-admin.css');
+    // Tilda may execute external scripts through document.write; after that document.currentScript can be null.
+    // Always resolve CSS from configured repoBase instead of the Tilda page URL.
+    link.href = assetUrl('admin/price-admin.css');
     link.dataset.paverAdminCss = '1';
     document.head.appendChild(link);
   }
