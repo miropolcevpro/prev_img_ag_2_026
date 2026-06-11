@@ -1,0 +1,20 @@
+CLEAN BUILD AUDIT
+Version: paver-logistics-pro-autolayout-20260611-1
+
+Included logistics files:
+- paver-logistics-module.js only
+
+Removed / not included:
+- paver-logistics-addon-final.js
+- paver-logistics-above-cart-v2.js
+- logistics_rules.json
+- backend/admin/reports artifacts
+- __MACOSX, .DS_Store, __pycache__, ._* files
+
+Logistics architecture:
+- Standalone module
+- No external logistics JSON dependency
+- Inline vehicle rules
+- Mounts before .pcCart[data-role="cartBlock"]
+- Collapsed by default
+- Does not modify product prices, discounts, pallet pricing, cart totals, or Tilda submit logic
