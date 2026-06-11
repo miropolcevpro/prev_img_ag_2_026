@@ -1,0 +1,85 @@
+{
+  "version": "2026-06-10-logistics-1",
+  "enabled": true,
+  "currency": "RUB",
+  "cost_mode": "manager_request",
+  "selection_mode": "auto_recommended_with_manual_override",
+  "recommendation": {
+    "mode": "min_trips_then_smallest_payload",
+    "mixed_pallet_formula": "sum_of_type_ratios",
+    "manager_can_override": true,
+    "note": "Для смешанного заказа загрузка по поддонам считается как tile_pallets/tile_capacity + curb_pallets/curb_capacity. Количество рейсов = max(рейсы по поддонам, рейсы по весу)."
+  },
+  "vehicles": [
+    {
+      "id": "flatbed_21t",
+      "category": "flatbed",
+      "name": "Бортовой длинномер г/п до 21 т.",
+      "short_name": "Длинномер 21 т",
+      "payload_kg": 21500,
+      "tile_pallet_capacity": 20,
+      "curb_pallet_capacity": 20,
+      "enabled": true
+    },
+    {
+      "id": "flatbed_22t",
+      "category": "flatbed",
+      "name": "Бортовой длинномер г/п до 22 т.",
+      "short_name": "Длинномер 22 т",
+      "payload_kg": 22000,
+      "tile_pallet_capacity": 20,
+      "curb_pallet_capacity": 20,
+      "enabled": true
+    },
+    {
+      "id": "flatbed_25t",
+      "category": "flatbed",
+      "name": "Бортовой длинномер г/п до 25 т.",
+      "short_name": "Длинномер 25 т",
+      "payload_kg": 25000,
+      "tile_pallet_capacity": 20,
+      "curb_pallet_capacity": 20,
+      "enabled": true
+    },
+    {
+      "id": "manipulator_5t",
+      "category": "manipulator",
+      "name": "Манипулятор г/п до 5 т.",
+      "short_name": "Манипулятор 5 т",
+      "payload_kg": 5000,
+      "tile_pallet_capacity": 6,
+      "curb_pallet_capacity": 6,
+      "enabled": true
+    },
+    {
+      "id": "manipulator_11t",
+      "category": "manipulator",
+      "name": "Манипулятор г/п до 11 т.",
+      "short_name": "Манипулятор 11 т",
+      "payload_kg": 11000,
+      "tile_pallet_capacity": 8,
+      "curb_pallet_capacity": 8,
+      "enabled": true
+    },
+    {
+      "id": "manipulator_15t",
+      "category": "manipulator",
+      "name": "Манипулятор г/п до 15 т.",
+      "short_name": "Манипулятор 15 т",
+      "payload_kg": 15000,
+      "tile_pallet_capacity": 12,
+      "curb_pallet_capacity": 12,
+      "enabled": true
+    },
+    {
+      "id": "manipulator_20t",
+      "category": "manipulator",
+      "name": "Манипулятор г/п до 20 т.",
+      "short_name": "Манипулятор 20 т",
+      "payload_kg": 20000,
+      "tile_pallet_capacity": 14,
+      "curb_pallet_capacity": 12,
+      "enabled": true
+    }
+  ]
+}
