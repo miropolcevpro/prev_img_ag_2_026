@@ -1,5 +1,5 @@
 {
-  "version": "2026-06-11-logistics-fix-1",
+  "version": "2026-06-11-logistics-fix-2",
   "enabled": true,
   "currency": "RUB",
   "cost_mode": "manager_request",

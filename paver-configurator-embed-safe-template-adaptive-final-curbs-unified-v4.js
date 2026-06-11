@@ -1,5 +1,5 @@
 (function(){
-  var EMBED_VERSION = 'logistics20260610_1';
+  var EMBED_VERSION = 'logistics20260611_2';
   if (window.__paverConfiguratorEmbedLoaded && window.__paverConfiguratorEmbedVersion === EMBED_VERSION) return;
   window.__paverConfiguratorEmbedLoaded = true;
   window.__paverConfiguratorEmbedVersion = EMBED_VERSION;
@@ -17,7 +17,7 @@
   }
 
   existing.outerHTML = `<div id="paverConf2026" class="paverConf2026"
-  data-cdn="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/" data-assets-ver="logistics20260610_1" data-cdn-commit="">
+  data-cdn="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/" data-assets-ver="logistics20260611_2" data-cdn-commit="">
 
   <div class="paverConf2026__head">
     <div class="paverConf2026__title">Быстрый расчет стоимости</div>
@@ -484,7 +484,7 @@
   }
   function currentAssetVersion(){
     var r = root();
-    try{ return (r && r.getAttribute('data-assets-ver')) || 'logistics20260611'; }catch(e){ return 'logistics20260611'; }
+    try{ return (r && r.getAttribute('data-assets-ver')) || 'logistics20260611_2'; }catch(e){ return 'logistics20260611_2'; }
   }
 
   function loadRules(){
