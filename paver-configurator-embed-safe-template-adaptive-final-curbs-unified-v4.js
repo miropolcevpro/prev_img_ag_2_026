@@ -438,7 +438,7 @@
   window.__pcLogisticsModule20260610 = true;
 
   var DEFAULT_RULES = {
-    version: '2026-06-10-logistics-1',
+    version: '2026-06-11-logistics-fix-1',
     enabled: true,
     default_vehicle_id: 'manipulator_11t',
     recommendation: {
@@ -484,7 +484,7 @@
   }
   function currentAssetVersion(){
     var r = root();
-    try{ return (r && r.getAttribute('data-assets-ver')) || 'logistics20260610'; }catch(e){ return 'logistics20260610'; }
+    try{ return (r && r.getAttribute('data-assets-ver')) || 'logistics20260611'; }catch(e){ return 'logistics20260611'; }
   }
 
   function loadRules(){
