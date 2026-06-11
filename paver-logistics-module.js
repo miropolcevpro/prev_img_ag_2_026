@@ -1,8 +1,10 @@
 (function(){
   'use strict';
 
-  var VERSION = 'paver-logistics-abovecart-20260611-1';
-  var MODULE_KEY = '__PAVER_LOGISTICS_CLEAN__';
+  var VERSION = 'paver-logistics-single-module-20260611-1';
+  var MODULE_KEY = '__PAVER_LOGISTICS_SINGLE_MODULE__';
+  // Stop previous logistics modules to prevent mixed layers.
+  ['__PAVER_LOGISTICS_CLEAN__','__PAVER_LOGISTICS_ADDON__','__PAVER_LOGISTICS_ABOVE_CART_V2__','__PAVER_LOGISTICS_SINGLE_MODULE__'].forEach(function(k){ if (k !== MODULE_KEY && window[k] && typeof window[k].destroy === 'function') { try { window[k].destroy(); } catch (_) {} } });
 
   // Stop an earlier copy of the same clean module if the page was re-rendered by Tilda.
   if (window[MODULE_KEY] && typeof window[MODULE_KEY].destroy === 'function') {
@@ -10,7 +12,7 @@
   }
 
   var DEFAULT_RULES = {
-    version: '2026-06-11-clean-inline-rules-1',
+    version: 'inline-transport-rules-20260611-1',
     enabled: true,
     mode: 'pallet_capacity',
     cost_mode: 'manager_request',
@@ -31,7 +33,6 @@
 
   var config = window.PAVER_LOGISTICS_CONFIG || {};
   var rootId = config.mountRootId || 'paverConf2026';
-  var rulesUrl = config.rulesUrl || resolveAssetUrl('logistics_rules.json');
   var rules = clone(DEFAULT_RULES);
   var selectedVehicleId = loadSession('paver_logistics_vehicle_id') || '';
   var panelOpen = false;
@@ -44,19 +45,6 @@
   var destroyed = false;
 
   function clone(obj){ return JSON.parse(JSON.stringify(obj)); }
-
-  function resolveAssetUrl(file){
-    try {
-      var scripts = document.getElementsByTagName('script');
-      for (var i = scripts.length - 1; i >= 0; i--) {
-        var src = scripts[i].getAttribute('src') || '';
-        if (src.indexOf('paver-logistics-module.js') !== -1 || src.indexOf('paver-logistics-addon-final.js') !== -1) {
-          return new URL(file, src).toString();
-        }
-      }
-    } catch (_) {}
-    return file;
-  }
 
   function loadSession(key){ try { return sessionStorage.getItem(key) || ''; } catch (_) { return ''; } }
   function saveSession(key, val){ try { sessionStorage.setItem(key, val || ''); } catch (_) {} }
@@ -81,12 +69,12 @@
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
 
   function ensureStyle(){
-    var old = document.getElementById('paverLogisticsCleanStyle');
+    var old = document.getElementById('paverLogisticsSingleModuleStyle');
     if (old) old.parentNode.removeChild(old);
     var style = document.createElement('style');
-    style.id = 'paverLogisticsCleanStyle';
+    style.id = 'paverLogisticsSingleModuleStyle';
     style.textContent = [
-      '[data-role="paverLogisticsAddon"],.paverLogisticsAddon{display:none!important}',
+      '[data-role="paverLogisticsAddon"],.paverLogisticsAddon,[data-role="paverLogisticsClean"],[data-role="paverLogisticsAboveCartV2"],[data-role="paverLogisticsSingle"]:not([data-version="' + VERSION + '"]){display:none!important}',
       '.plcBox{margin:16px 0 14px;padding:0;border:1px solid rgba(31,107,58,.22);border-radius:18px;background:linear-gradient(180deg,rgba(31,107,58,.045),rgba(255,255,255,.98));box-shadow:0 8px 22px rgba(0,0,0,.045);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));max-width:100%;overflow:hidden}',
       '.plcCollapsed{width:100%;border:0;background:transparent;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) 46px;align-items:center;gap:14px;cursor:pointer;text-align:left;font:inherit;color:inherit;min-height:78px}.plcCollapsedMain{min-width:0;display:grid;grid-template-rows:auto auto;gap:8px}.plcCollapsedTitle{display:block;font-size:20px;font-weight:950;line-height:1.12;letter-spacing:-.02em;white-space:normal}.plcCollapsedRow{min-width:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.plcCollapsedSub{display:block;flex:1 1 230px;min-width:0;font-size:13.5px;color:rgba(0,0,0,.62);line-height:1.32;white-space:normal;overflow-wrap:anywhere}.plcCollapsedBadge{flex:0 0 auto;max-width:100%;min-height:34px;border-radius:999px;padding:0 13px;display:inline-flex;align-items:center;justify-content:center;text-align:center;background:rgba(31,107,58,.12);color:#1f6b3a;font-size:13px;font-weight:950;line-height:1.15;white-space:nowrap}.plcCollapsedBadgeManual{background:rgba(27,116,255,.12);color:#1b74ff}.plcChevron{width:46px;height:46px;border-radius:999px;border:1px solid rgba(31,107,58,.2);background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;line-height:1;color:#1f6b3a;transition:transform .16s ease;justify-self:center;align-self:center;flex:0 0 46px}.plcBox.isPanelOpen .plcChevron{transform:rotate(180deg)}.plcPanel{padding:0 16px 16px}.plcDivider{height:1px;background:rgba(0,0,0,.07);margin:0 16px 12px}',
       '.plcBox,.plcBox *{box-sizing:border-box}.plcBox button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.plcHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.plcTitle{font-size:18px;font-weight:950;line-height:1.15}.plcHint{font-size:13px;line-height:1.35;color:rgba(0,0,0,.62);margin-top:5px;max-width:560px}.plcBadge{font-size:11.5px;font-weight:900;border-radius:999px;padding:7px 10px;background:rgba(31,107,58,.13);color:#1f6b3a;white-space:nowrap}.plcBadgeManual{background:rgba(27,116,255,.12);color:#1b74ff}',
@@ -140,12 +128,12 @@
   function ensureBox(){
     var r = root();
     if (!r) return null;
-    qa('[data-role="paverLogisticsClean"]').forEach(function(el, idx){ if (idx > 0 && el.parentNode) el.parentNode.removeChild(el); });
-    var box = q('[data-role="paverLogisticsClean"]');
+    qa('[data-role="paverLogisticsSingle"]').forEach(function(el, idx){ if (idx > 0 && el.parentNode) el.parentNode.removeChild(el); });
+    var box = q('[data-role="paverLogisticsSingle"]');
     if (!box) {
       box = document.createElement('section');
       box.className = 'plcBox';
-      box.setAttribute('data-role', 'paverLogisticsClean');
+      box.setAttribute('data-role', 'paverLogisticsSingle');
       box.setAttribute('data-version', VERSION);
     }
     placeBox(box);
@@ -339,7 +327,7 @@
   function handleClick(e){
     var target = e.target;
     if (!target || !target.closest) return;
-    var box = target.closest('[data-role="paverLogisticsClean"]');
+    var box = target.closest('[data-role="paverLogisticsSingle"]');
     if (!box) return;
     var action = target.closest('[data-plc-action]');
     var vehicle = target.closest('[data-plc-vehicle]');
@@ -365,24 +353,6 @@
     }
   }
 
-  function loadRules(){
-    if (!rulesUrl || config.disableExternalRules === true) return Promise.resolve(false);
-    return fetch(rulesUrl, { cache:'no-store' }).then(function(r){
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    }).then(function(json){
-      if (json && Array.isArray(json.vehicles) && json.vehicles.length) {
-        rules = json;
-        schedule(true);
-        return true;
-      }
-      return false;
-    }).catch(function(err){
-      console.warn('[PaverLogisticsClean] external logistics_rules.json ignored; inline rules are used.', err && err.message ? err.message : err);
-      return false;
-    });
-  }
-
   function destroy(){
     destroyed = true;
     if (observer) observer.disconnect();
@@ -392,9 +362,9 @@
     if (renderTimer) cancelAnimationFrame(renderTimer);
     renderTimer = 0;
     document.removeEventListener('click', handleClick, true);
-    var box = document.querySelector('[data-role="paverLogisticsClean"]');
+    var box = document.querySelector('[data-role="paverLogisticsSingle"]');
     if (box && box.parentNode) box.parentNode.removeChild(box);
-    var style = document.getElementById('paverLogisticsCleanStyle');
+    var style = document.getElementById('paverLogisticsSingleModuleStyle');
     if (style && style.parentNode) style.parentNode.removeChild(style);
   }
 
@@ -408,7 +378,6 @@
       observer.observe(r, { childList:true, subtree:true, characterData:true });
     }
     pollTimer = setInterval(function(){ schedule(false); }, 900);
-    loadRules();
   }
 
   window[MODULE_KEY] = {
@@ -416,7 +385,7 @@
     destroy: destroy,
     render: function(){ schedule(true); },
     diagnose: function(){
-      var box = document.querySelector('[data-role="paverLogisticsClean"]');
+      var box = document.querySelector('[data-role="paverLogisticsSingle"]');
       return {
         version: VERSION,
         box: !!box,
@@ -430,6 +399,7 @@
     }
   };
   window.PaverLogisticsClean = window[MODULE_KEY];
+  window.PaverLogisticsSingle = window[MODULE_KEY];
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once:true }); else init();
 })();
