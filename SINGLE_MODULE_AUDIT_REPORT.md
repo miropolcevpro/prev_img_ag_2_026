@@ -1,13 +1,25 @@
-# Audit report
+# SINGLE LOGISTICS FINAL POLISH AUDIT
 
-Status: passed.
+Status: OK
 
-- Main calculator JS syntax: ok.
-- Logistics module JS syntax: ok.
-- Price JSON: valid.
-- Logistics module is one file: `paver-logistics-module.js`.
+## Scope
+Only `paver-logistics-module.js` was changed.
+Main calculator JS, prices, discounts, pallets, cart logic and Tilda submit bridge were not changed.
+
+## UI changes
+- The status badge text is `Рекомендация по транспорту`.
+- Manual mode badge text is `Выбранный транспорт`.
+- The trip count is rendered as a separate block:
+  - label: `Количество рейсов`
+  - value: `N рейс(ов)`
+- Header layout uses a vertical title/badge stack to avoid text collisions.
+- Chevron remains centered via CSS grid.
+
+## Dependency model
+- One logistics file: `paver-logistics-module.js`.
 - No external logistics JSON dependency.
-- No legacy logistics addon files in the package.
-- Logistics placement: before `.pcCart[data-role="cartBlock"]`, never inside cart.
-- Default state: collapsed.
-- UI fix: title, mode badge, vehicle, trips and pallet/weight badge are separated into stable flex/grid rows.
+- No old logistics addon files included.
+
+## Checks
+- Node syntax check: passed.
+- No literal `Авто` / `авто` in logistics module.
