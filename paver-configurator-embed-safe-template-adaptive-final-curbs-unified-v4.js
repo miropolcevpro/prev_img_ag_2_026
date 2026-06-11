@@ -1,5 +1,5 @@
 (function(){
-  var EMBED_VERSION = 'logistics20260611_2';
+  var EMBED_VERSION = 'logistics20260611_fix3';
   if (window.__paverConfiguratorEmbedLoaded && window.__paverConfiguratorEmbedVersion === EMBED_VERSION) return;
   window.__paverConfiguratorEmbedLoaded = true;
   window.__paverConfiguratorEmbedVersion = EMBED_VERSION;
@@ -17,7 +17,7 @@
   }
 
   existing.outerHTML = `<div id="paverConf2026" class="paverConf2026"
-  data-cdn="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/" data-assets-ver="logistics20260611_2" data-cdn-commit="">
+  data-cdn="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/" data-assets-ver="logistics20260611_fix3" data-cdn-commit="">
 
   <div class="paverConf2026__head">
     <div class="paverConf2026__title">Быстрый расчет стоимости</div>
@@ -432,20 +432,19 @@
   }catch(e){}
 })();
 
-// Logistics module 2026-06-10: isolated cart-level extension. Does not change product pricing, discounts, pallets or Tilda payload totals.
+
+// Logistics module 2026-06-11 FIX3: isolated cart-level extension. Does not change product pricing, discounts, pallets or Tilda totals.
 (function(){
-  if (window.__pcLogisticsModule20260610) return;
-  window.__pcLogisticsModule20260610 = true;
+  var MODULE_VERSION = '2026-06-11-fix3';
+  if (window.__pcLogisticsModuleFix3 === MODULE_VERSION) return;
+  window.__pcLogisticsModuleFix3 = MODULE_VERSION;
 
   var DEFAULT_RULES = {
-    version: '2026-06-11-logistics-fix-1',
+    version: '2026-06-11-logistics-fix-3-inline',
     enabled: true,
-    default_vehicle_id: 'manipulator_11t',
-    recommendation: {
-      mode: 'min_trips_then_smallest_payload',
-      mixed_pallet_formula: 'sum_of_type_ratios',
-      manager_can_override: true
-    },
+    currency: 'RUB',
+    cost_mode: 'manager_request',
+    selection_mode: 'auto_recommended_with_manual_override',
     vehicles: [
       { id:'flatbed_21t', category:'flatbed', name:'Бортовой длинномер г/п до 21 т.', short_name:'Длинномер 21 т', payload_kg:21500, tile_pallet_capacity:20, curb_pallet_capacity:20, enabled:true },
       { id:'flatbed_22t', category:'flatbed', name:'Бортовой длинномер г/п до 22 т.', short_name:'Длинномер 22 т', payload_kg:22000, tile_pallet_capacity:20, curb_pallet_capacity:20, enabled:true },
@@ -459,57 +458,59 @@
 
   var rules = DEFAULT_RULES;
   var rulesLoaded = false;
-  var selectedVehicleId = null;
+  var selectedVehicleId = '';
   var lastSignature = '';
   var lastResult = null;
-  var observerBound = false;
+  var scheduled = false;
+  var observer = null;
 
   function root(){ return document.getElementById('paverConf2026') || document.querySelector('.paverConf2026'); }
-  function toNum(v){ var n = Number(v); return isFinite(n) ? n : 0; }
-  function ceilSafe(v){ return Math.max(0, Math.ceil(toNum(v))); }
-  function fmtNum(v, d){
-    if (typeof v !== 'number' || !isFinite(v)) return '—';
-    return v.toLocaleString('ru-RU', { maximumFractionDigits: d || 0 });
+  function toNum(v){
+    if (typeof v === 'string') v = v.replace(/\s+/g,'').replace(',', '.');
+    var n = Number(v);
+    return isFinite(n) ? n : 0;
   }
+  function fmtNum(v, d){ if (typeof v !== 'number' || !isFinite(v)) return '—'; return v.toLocaleString('ru-RU', { maximumFractionDigits: d || 0 }); }
   function fmtKg(v){ return fmtNum(Math.round(toNum(v)), 0) + ' кг'; }
   function fmtPct(v){ return Math.round(Math.max(0, toNum(v)) * 100) + '%'; }
-  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>\"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c] || c; }); }
 
-  function currentCdnBase(){
+  function cdnBase(){
     var r = root();
     var cdn = '';
-    try{ cdn = (r && r.dataset && r.dataset.cdn) ? r.dataset.cdn : ''; }catch(e){}
-    if (!cdn) cdn = 'https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/';
-    return String(cdn).replace(/\/?$/, '/');
+    try { cdn = r && r.dataset ? (r.dataset.cdn || '') : ''; } catch(e){}
+    return (cdn || 'https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/').replace(/\/?$/, '/');
   }
-  function currentAssetVersion(){
+  function assetVersion(){
     var r = root();
-    try{ return (r && r.getAttribute('data-assets-ver')) || 'logistics20260611_2'; }catch(e){ return 'logistics20260611_2'; }
+    try { return (r && r.getAttribute('data-assets-ver')) || MODULE_VERSION; } catch(e){ return MODULE_VERSION; }
   }
 
   function loadRules(){
     if (rulesLoaded) return Promise.resolve(rules);
     rulesLoaded = true;
-    var url = currentCdnBase() + 'logistics_rules.json?v=' + encodeURIComponent(currentAssetVersion());
-    return fetch(url, { cache:'no-store' }).then(function(res){
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
-    }).then(function(json){
-      if (json && Array.isArray(json.vehicles) && json.vehicles.length){ rules = json; }
-      return rules;
-    }).catch(function(){
-      rules = DEFAULT_RULES;
-      return rules;
-    });
+    var url = cdnBase() + 'logistics_rules.json?v=' + encodeURIComponent(assetVersion());
+    return fetch(url, { cache:'no-store' })
+      .then(function(res){ if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(function(json){
+        if (json && json.enabled !== false && Array.isArray(json.vehicles) && json.vehicles.length){ rules = json; }
+        return rules;
+      })
+      .catch(function(err){
+        window.__pcLogisticsRulesLoadError = String(err && err.message ? err.message : err);
+        rules = DEFAULT_RULES;
+        return rules;
+      });
   }
 
   function ensureStyle(){
-    if (document.getElementById('pcLogisticsStyles20260610')) return;
+    if (document.getElementById('pcLogisticsStylesFix3')) return;
     var st = document.createElement('style');
-    st.id = 'pcLogisticsStyles20260610';
+    st.id = 'pcLogisticsStylesFix3';
     st.textContent = [
-      '.pcLogistics{margin-top:12px;border:1px solid rgba(27,116,255,.20);border-radius:14px;background:linear-gradient(180deg,rgba(27,116,255,.055),rgba(255,255,255,.98));padding:12px;color:rgba(0,0,0,.88);}',
+      '.pcLogistics{margin-top:12px;border:1px solid rgba(27,116,255,.20);border-radius:14px;background:linear-gradient(180deg,rgba(27,116,255,.055),rgba(255,255,255,.98));padding:12px;color:rgba(0,0,0,.88);box-sizing:border-box;}',
       '.pcLogistics[hidden]{display:none!important;}',
+      '.pcLogistics *{box-sizing:border-box;}',
       '.pcLogistics__head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}',
       '.pcLogistics__title{font-size:16px;font-weight:900;line-height:1.12;}',
       '.pcLogistics__badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 9px;border-radius:999px;background:#1b74ff;color:#fff;font-size:11.5px;font-weight:900;white-space:nowrap;}',
@@ -552,68 +553,59 @@
     box = document.createElement('div');
     box.className = 'pcLogistics';
     box.setAttribute('data-role', 'logisticsBlock');
+    box.setAttribute('data-logistics-version', MODULE_VERSION);
     box.hidden = true;
     var footer = r.querySelector('[data-role="cartFooter"]');
-    var cart = r.querySelector('[data-role="cartBlock"]') || r.querySelector('.pcCart');
-    if (footer && footer.parentNode){ footer.parentNode.insertBefore(box, footer.nextSibling); }
-    else if (cart){ cart.appendChild(box); }
-    else { r.appendChild(box); }
+    var cartBlock = r.querySelector('[data-role="cartBlock"]') || r.querySelector('.pcCart');
+    if (footer && footer.parentNode) footer.parentNode.insertBefore(box, footer.nextSibling);
+    else if (cartBlock) cartBlock.appendChild(box);
+    else r.appendChild(box);
     return box;
   }
 
-  function getCart(){
-    try{ if (window.__pcCart && Array.isArray(window.__pcCart.positions)) return window.__pcCart; }catch(e){}
-    return { positions: [] };
+  function getPositions(){
+    try { if (window.__pcCart && Array.isArray(window.__pcCart.positions)) return window.__pcCart.positions; } catch(e){}
+    try {
+      var inp = document.querySelector('input[name="order_positions_json"]');
+      if (inp && inp.value){
+        var obj = JSON.parse(inp.value);
+        if (obj && Array.isArray(obj.positions)) return obj.positions;
+      }
+    } catch(e){}
+    return [];
   }
 
   function isCurbPosition(p){
-    var s = [p && p.type, p && p.form_id, p && p.form_name].join(' ').toLowerCase();
+    var s = [p && p.type, p && p.form_id, p && p.form_name, p && p.name].join(' ').toLowerCase();
     return /curb|bord|борд|борт/.test(s);
   }
-
   function summarizeCart(positions){
     var out = { tile_pallets:0, curb_pallets:0, total_pallets:0, total_weight_kg:0, positions_count:0, unknown_weight:false };
     for (var i=0;i<positions.length;i++){
       var p = positions[i] || {};
       var pal = Math.max(0, toNum(p.pallets));
-      if (isCurbPosition(p)) out.curb_pallets += pal;
-      else out.tile_pallets += pal;
+      if (!pal && toNum(p.per_pallet_qty) > 0 && toNum(p.ship_qty) > 0) pal = Math.ceil(toNum(p.ship_qty) / toNum(p.per_pallet_qty));
+      if (isCurbPosition(p)) out.curb_pallets += pal; else out.tile_pallets += pal;
       out.total_pallets += pal;
       var w = toNum(p.ship_weight_kg || p.weight_kg);
-      if (w > 0) out.total_weight_kg += w;
-      else if (pal > 0) out.unknown_weight = true;
+      if (!w && pal && toNum(p.pallet_weight_kg)) w = pal * toNum(p.pallet_weight_kg);
+      if (w > 0) out.total_weight_kg += w; else if (pal > 0) out.unknown_weight = true;
       out.positions_count++;
     }
     return out;
   }
-
-  function vehicleTrips(v, summary){
+  function vehicleTrips(v, s){
     var tileCap = Math.max(1, toNum(v.tile_pallet_capacity));
     var curbCap = Math.max(1, toNum(v.curb_pallet_capacity));
     var payload = Math.max(1, toNum(v.payload_kg));
-    var normalizedPalletLoad = (summary.tile_pallets / tileCap) + (summary.curb_pallets / curbCap);
-    var tripsByPallets = Math.max(1, Math.ceil(normalizedPalletLoad || 0));
-    var tripsByWeight = Math.max(1, Math.ceil(summary.total_weight_kg / payload));
+    var load = (s.tile_pallets / tileCap) + (s.curb_pallets / curbCap);
+    var tripsByPallets = Math.max(1, Math.ceil(load || 0));
+    var tripsByWeight = Math.max(1, Math.ceil(s.total_weight_kg / payload));
     var trips = Math.max(tripsByPallets, tripsByWeight);
-    var palletUtil = trips > 0 ? normalizedPalletLoad / trips : 0;
-    var weightUtil = trips > 0 ? (summary.total_weight_kg / payload) / trips : 0;
-    return {
-      vehicle: v,
-      trips: trips,
-      trips_by_pallets: tripsByPallets,
-      trips_by_weight: tripsByWeight,
-      pallet_utilization: palletUtil,
-      weight_utilization: weightUtil,
-      limiting: tripsByWeight > tripsByPallets ? 'weight' : 'pallets',
-      tile_capacity_per_trip: tileCap,
-      curb_capacity_per_trip: curbCap,
-      payload_kg: payload
-    };
+    return { vehicle:v, trips:trips, trips_by_pallets:tripsByPallets, trips_by_weight:tripsByWeight, pallet_utilization: trips ? load/trips : 0, weight_utilization: trips ? (s.total_weight_kg/payload)/trips : 0, limiting: tripsByWeight > tripsByPallets ? 'weight' : 'pallets', tile_capacity_per_trip:tileCap, curb_capacity_per_trip:curbCap, payload_kg:payload };
   }
-
   function analyze(){
-    var cart = getCart();
-    var positions = cart.positions || [];
+    var positions = getPositions();
     var vehicles = (rules && Array.isArray(rules.vehicles)) ? rules.vehicles.filter(function(v){ return v && v.enabled !== false; }) : [];
     var summary = summarizeCart(positions);
     var options = vehicles.map(function(v){ return vehicleTrips(v, summary); });
@@ -624,20 +616,13 @@
       if (ac !== bc) return ac - bc;
       return toNum(a.vehicle.payload_kg) - toNum(b.vehicle.payload_kg);
     });
+    if (!selectedVehicleId){ try { selectedVehicleId = sessionStorage.getItem('pc_selected_vehicle_id') || ''; } catch(e){} }
     var recommended = options[0] || null;
-    if (!selectedVehicleId){
-      try{ selectedVehicleId = sessionStorage.getItem('pc_selected_vehicle_id') || ''; }catch(e){}
-    }
-    var selected = null;
-    if (selectedVehicleId){
-      selected = options.filter(function(o){ return o.vehicle.id === selectedVehicleId; })[0] || null;
-    }
+    var selected = selectedVehicleId ? options.filter(function(o){ return o.vehicle.id === selectedVehicleId; })[0] : null;
     if (!selected) selected = recommended;
-    var result = { enabled: !!(rules && rules.enabled !== false), summary: summary, options: options, recommended: recommended, selected: selected, selected_vehicle_id: selected && selected.vehicle ? selected.vehicle.id : '', rules_version: rules && rules.version ? rules.version : '' };
-    lastResult = result;
-    return result;
+    lastResult = { module_version:MODULE_VERSION, enabled: !!(rules && rules.enabled !== false), summary:summary, options:options, recommended:recommended, selected:selected, selected_vehicle_id:selected && selected.vehicle ? selected.vehicle.id : '', rules_version:rules && rules.version ? rules.version : '', rules_load_error:window.__pcLogisticsRulesLoadError || '' };
+    return lastResult;
   }
-
   function logisticsText(result){
     if (!result || !result.selected || !result.summary.total_pallets) return '';
     var s = result.summary, o = result.selected, v = o.vehicle;
@@ -645,154 +630,99 @@
     lines.push('ЛОГИСТИКА');
     lines.push('Транспорт: ' + (v.name || v.id));
     lines.push('Рейсов: ' + o.trips);
-    lines.push('Поддоны всего: ' + fmtNum(s.total_pallets, 0) + ' шт.');
-    lines.push('Плитка: ' + fmtNum(s.tile_pallets, 0) + ' подд. / Бордюр: ' + fmtNum(s.curb_pallets, 0) + ' подд.');
+    lines.push('Поддоны всего: ' + fmtNum(s.total_pallets,0) + ' шт.');
+    lines.push('Плитка: ' + fmtNum(s.tile_pallets,0) + ' подд. / Бордюр: ' + fmtNum(s.curb_pallets,0) + ' подд.');
     lines.push('Вес общий: ' + fmtKg(s.total_weight_kg));
-    lines.push('Вместимость за рейс: плитка ' + o.tile_capacity_per_trip + ' подд., бордюр ' + o.curb_capacity_per_trip + ' подд., грузоподъемность ' + fmtKg(o.payload_kg));
+    lines.push('Вместимость за рейс: плитка ' + o.tile_capacity_per_trip + ' подд., бордюр ' + o.curb_capacity_per_trip + ' подд., грузоподъёмность ' + fmtKg(o.payload_kg));
     lines.push('Загрузка по поддонам: ' + fmtPct(o.pallet_utilization));
     lines.push('Загрузка по весу: ' + fmtPct(o.weight_utilization));
-    if (result.recommended && result.recommended.vehicle && result.recommended.vehicle.id !== v.id){
-      lines.push('Авто-рекомендация: ' + result.recommended.vehicle.name + ', ' + result.recommended.trips + ' рейс(ов)');
-    }
     lines.push('Стоимость доставки не включена и согласуется менеджером.');
     return lines.join('\n');
   }
-
   function syncHidden(result){
     var data = result || lastResult || analyze();
     var text = logisticsText(data);
     var json = '';
-    try{ json = JSON.stringify(data); }catch(e){ json = ''; }
+    try { json = JSON.stringify(data); } catch(e){}
     function set(form, name, val){
       if (!form) return;
       var el = form.querySelector('input[name="'+name+'"], textarea[name="'+name+'"]');
-      if (!el){ el = document.createElement('input'); el.type = 'hidden'; el.name = name; form.appendChild(el); }
+      if (!el){ el = document.createElement('input'); el.type='hidden'; el.name=name; form.appendChild(el); }
       el.value = val || '';
-      try{ el.dispatchEvent(new Event('input', {bubbles:true})); }catch(e){}
-      try{ el.dispatchEvent(new Event('change', {bubbles:true})); }catch(e){}
+      try{ el.dispatchEvent(new Event('input',{bubbles:true})); }catch(e){}
+      try{ el.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){}
     }
     var forms = document.querySelectorAll('form');
     for (var i=0;i<forms.length;i++){
       set(forms[i], 'order_logistics_text', text);
       set(forms[i], 'order_logistics_json', json);
-      if (data && data.selected && data.selected.vehicle){
-        set(forms[i], 'order_logistics_vehicle', data.selected.vehicle.name || data.selected.vehicle.id);
-        set(forms[i], 'order_logistics_trips', data.selected.trips);
-      }
+      set(forms[i], 'order_logistics_vehicle', data && data.selected && data.selected.vehicle ? (data.selected.vehicle.name || data.selected.vehicle.id) : '');
+      set(forms[i], 'order_logistics_trips', data && data.selected ? data.selected.trips : '');
     }
-    return { text:text, json:json };
   }
-
   function render(){
     var box = ensureBox();
     if (!box) return;
     var result = analyze();
-    if (!result.enabled || !result.summary.total_pallets || !result.options.length){
-      box.hidden = true;
-      syncHidden(result);
-      return;
-    }
+    if (!result.enabled || !result.summary.total_pallets || !result.options.length){ box.hidden = true; syncHidden(result); return; }
     box.hidden = false;
-    var s = result.summary;
-    var sel = result.selected;
-    var rec = result.recommended;
-    var v = sel.vehicle;
+    var s = result.summary, sel = result.selected, rec = result.recommended, v = sel.vehicle;
     var palPct = Math.min(100, Math.round(sel.pallet_utilization * 100));
     var weightPct = Math.min(100, Math.round(sel.weight_utilization * 100));
-    var isManual = rec && rec.vehicle && sel.vehicle && rec.vehicle.id !== sel.vehicle.id;
-
+    var isManual = rec && rec.vehicle && v && rec.vehicle.id !== v.id;
     var optionsHtml = result.options.map(function(o){
-      var label = (o.vehicle.short_name || o.vehicle.name || o.vehicle.id) + ' — ' + o.trips + ' рейс.';
-      if (rec && rec.vehicle && rec.vehicle.id === o.vehicle.id) label += ' · рекомендовано';
-      return '<option value="'+esc(o.vehicle.id)+'" '+(o.vehicle.id===sel.vehicle.id?'selected':'')+'>'+esc(label)+'</option>';
+      var label = (o.vehicle.short_name || o.vehicle.name || o.vehicle.id) + ' — ' + o.trips + ' рейс.' + (rec && rec.vehicle && rec.vehicle.id === o.vehicle.id ? ' · рекомендовано' : '');
+      return '<option value="'+esc(o.vehicle.id)+'" '+(o.vehicle.id===v.id?'selected':'')+'>'+esc(label)+'</option>';
     }).join('');
-
     var rowsHtml = result.options.map(function(o){
-      var cls = o.vehicle.id === sel.vehicle.id ? ' class="is-selected"' : '';
+      var cls = o.vehicle.id === v.id ? ' class="is-selected"' : '';
       return '<tr'+cls+'><td>'+esc(o.vehicle.short_name || o.vehicle.name)+'</td><td>'+o.trips+'</td><td>'+esc(fmtPct(o.pallet_utilization))+'</td><td>'+esc(fmtPct(o.weight_utilization))+'</td><td>'+o.tile_capacity_per_trip+' / '+o.curb_capacity_per_trip+'</td></tr>';
     }).join('');
-
     box.innerHTML = ''+
       '<div class="pcLogistics__head"><div><div class="pcLogistics__title">Логистика по поддонам</div><div class="pcLogistics__hint">Предварительный подбор транспорта по вместимости поддонов и весу. Доставка согласуется менеджером.</div></div><div class="pcLogistics__badge">'+(isManual?'выбрано вручную':'авто-рекомендация')+'</div></div>'+ 
-      '<div class="pcLogistics__grid">'+
-        '<div class="pcLogistics__metric"><span>Поддоны всего</span><b>'+fmtNum(s.total_pallets,0)+' шт.</b></div>'+ 
-        '<div class="pcLogistics__metric"><span>Плитка / бордюр</span><b>'+fmtNum(s.tile_pallets,0)+' / '+fmtNum(s.curb_pallets,0)+'</b></div>'+ 
-        '<div class="pcLogistics__metric"><span>Вес заказа</span><b>'+fmtKg(s.total_weight_kg)+'</b></div>'+ 
-      '</div>'+ 
-      '<div class="pcLogistics__vehicle"><div class="pcLogistics__vehicleTop"><div class="pcLogistics__vehicleName">'+esc(v.name || v.id)+'</div><div class="pcLogistics__trips">'+sel.trips+' рейс(ов)</div></div>'+ 
-        '<div class="pcLogistics__bars">'+ 
-          '<div class="pcLogistics__barRow"><span>Поддоны</span><div class="pcLogistics__bar"><i style="width:'+palPct+'%"></i></div><b>'+fmtPct(sel.pallet_utilization)+'</b></div>'+ 
-          '<div class="pcLogistics__barRow"><span>Вес</span><div class="pcLogistics__bar '+(sel.limiting==='weight'?'pcLogistics__bar--warn':'')+'"><i style="width:'+weightPct+'%"></i></div><b>'+fmtPct(sel.weight_utilization)+'</b></div>'+ 
-        '</div></div>'+ 
+      '<div class="pcLogistics__grid"><div class="pcLogistics__metric"><span>Поддоны всего</span><b>'+fmtNum(s.total_pallets,0)+' шт.</b></div><div class="pcLogistics__metric"><span>Плитка / бордюр</span><b>'+fmtNum(s.tile_pallets,0)+' / '+fmtNum(s.curb_pallets,0)+'</b></div><div class="pcLogistics__metric"><span>Вес заказа</span><b>'+fmtKg(s.total_weight_kg)+'</b></div></div>'+ 
+      '<div class="pcLogistics__vehicle"><div class="pcLogistics__vehicleTop"><div class="pcLogistics__vehicleName">'+esc(v.name || v.id)+'</div><div class="pcLogistics__trips">'+sel.trips+' рейс(ов)</div></div><div class="pcLogistics__bars"><div class="pcLogistics__barRow"><span>Поддоны</span><div class="pcLogistics__bar"><i style="width:'+palPct+'%"></i></div><b>'+fmtPct(sel.pallet_utilization)+'</b></div><div class="pcLogistics__barRow"><span>Вес</span><div class="pcLogistics__bar '+(sel.limiting==='weight'?'pcLogistics__bar--warn':'')+'"><i style="width:'+weightPct+'%"></i></div><b>'+fmtPct(sel.weight_utilization)+'</b></div></div></div>'+ 
       '<div class="pcLogistics__control"><select class="pcLogistics__select" data-role="logisticsVehicleSelect">'+optionsHtml+'</select><button type="button" class="pcLogistics__btn" data-role="logisticsDetailsToggle">Варианты</button></div>'+ 
       '<div class="pcLogistics__hint">Вместимость выбранного транспорта за 1 рейс: плитка '+sel.tile_capacity_per_trip+' подд., бордюр '+sel.curb_capacity_per_trip+' подд.; грузоподъёмность '+fmtKg(sel.payload_kg)+'. Для смешанного заказа загрузка считается как сумма долей по типам поддонов.</div>'+ 
       '<div class="pcLogistics__details"><table class="pcLogistics__table"><thead><tr><th>Транспорт</th><th>Рейсы</th><th>Поддоны</th><th>Вес</th><th>Плитка/бордюр</th></tr></thead><tbody>'+rowsHtml+'</tbody></table></div>';
-
     var select = box.querySelector('[data-role="logisticsVehicleSelect"]');
-    if (select){
-      select.onchange = function(){
-        selectedVehicleId = select.value || '';
-        try{ sessionStorage.setItem('pc_selected_vehicle_id', selectedVehicleId); }catch(e){}
-        render();
-      };
-    }
+    if (select){ select.onchange = function(){ selectedVehicleId = select.value || ''; try{ sessionStorage.setItem('pc_selected_vehicle_id', selectedVehicleId); }catch(e){} schedule(true); }; }
     var btn = box.querySelector('[data-role="logisticsDetailsToggle"]');
-    if (btn){
-      btn.onclick = function(){ box.classList.toggle('is-open'); };
-    }
+    if (btn){ btn.onclick = function(){ box.classList.toggle('is-open'); }; }
     syncHidden(result);
   }
-
   function signature(){
-    var c = getCart();
-    try{
-      return JSON.stringify((c.positions || []).map(function(p){ return [p.id, p.type, p.form_id, p.pallets, p.ship_weight_kg || p.weight_kg, p.grand_total]; }));
-    }catch(e){ return String(Date.now()); }
+    try { return JSON.stringify(getPositions().map(function(p){ return [p.id,p.form_id,p.form_name,p.type,p.pallets,p.per_pallet_qty,p.ship_qty,p.ship_weight_kg || p.weight_kg,p.grand_total]; })); }
+    catch(e){ return String(Date.now()); }
   }
-
-  function tick(force){
-    var sig = signature();
-    if (force || sig !== lastSignature){
-      lastSignature = sig;
-      loadRules().then(render);
+  function schedule(force){
+    if (scheduled && !force) return;
+    scheduled = true;
+    setTimeout(function(){
+      scheduled = false;
+      var sig = signature();
+      if (force || sig !== lastSignature){ lastSignature = sig; loadRules().then(render); }
+    }, 60);
+  }
+  function bind(){
+    var r = root();
+    if (r && !observer){
+      try { observer = new MutationObserver(function(){ schedule(false); }); observer.observe(r, { childList:true, subtree:true, characterData:true, attributes:true }); } catch(e){}
+    }
+    if (!window.__pcLogisticsFix3Listeners){
+      window.__pcLogisticsFix3Listeners = true;
+      window.addEventListener('paver:cart-updated', function(){ schedule(true); });
+      document.addEventListener('click', function(ev){
+        var t = ev.target;
+        if (!t || !t.closest) return;
+        if (t.closest('[data-role="cartAddBtn"], .pcCartItem__remove, [data-role="cartBlock"], [data-role="cartList"]')) setTimeout(function(){ schedule(true); }, 120);
+        if (t.id === 'pcSubmitToTildaBtn') { try { syncHidden(analyze()); } catch(e){} }
+      }, true);
+      document.addEventListener('change', function(ev){ var t=ev.target; if(t && t.closest && t.closest('[data-role="cartBlock"]')) setTimeout(function(){ schedule(true); }, 120); }, true);
+      setInterval(function(){ bind(); schedule(false); }, 500);
     }
   }
-
-  function bindObserver(){
-    if (observerBound) return;
-    var r = root();
-    if (!r) return;
-    observerBound = true;
-    try{
-      var mo = new MutationObserver(function(){ tick(false); });
-      mo.observe(r, { childList:true, subtree:true, characterData:true });
-    }catch(e){}
-  }
-
-  function patchSubmitCopy(){
-    if (window.__pcLogisticsSubmitCopyBound) return;
-    window.__pcLogisticsSubmitCopyBound = true;
-    document.addEventListener('click', function(ev){
-      var t = ev.target;
-      if (!t || t.id !== 'pcSubmitToTildaBtn') return;
-      try{ syncHidden(analyze()); }catch(e){}
-    }, true);
-  }
-
-  function start(){
-    ensureStyle();
-    bindObserver();
-    patchSubmitCopy();
-    loadRules().then(function(){ tick(true); });
-    setInterval(function(){ bindObserver(); tick(false); }, 800);
-  }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
-  else start();
-
-  window.PaverLogistics = {
-    getRules: function(){ return rules; },
-    getResult: function(){ return lastResult || analyze(); },
-    recalc: function(){ return loadRules().then(function(){ render(); return lastResult; }); }
-  };
+  function start(){ ensureStyle(); ensureBox(); bind(); loadRules().then(function(){ schedule(true); }); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+  window.PaverLogistics = { version: MODULE_VERSION, getRules:function(){return rules;}, getResult:function(){return lastResult || analyze();}, recalc:function(){return loadRules().then(function(){ render(); return lastResult; });}, diagnose:function(){ return { module_version:MODULE_VERSION, rules_version:rules&&rules.version, rules_load_error:window.__pcLogisticsRulesLoadError||'', positions:getPositions(), result:lastResult||analyze(), box:!!document.querySelector('[data-role="logisticsBlock"]') }; } };
 })();
