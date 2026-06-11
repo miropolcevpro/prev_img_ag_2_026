@@ -1,24 +1,25 @@
 (function(){
   'use strict';
-  var VERSION = 'logistics-addon-final-20260611-1';
+  var VERSION = 'logistics-addon-uxpolish-20260611-1';
   if (window.__PAVER_LOGISTICS_ADDON_VERSION === VERSION) return;
   window.__PAVER_LOGISTICS_ADDON_VERSION = VERSION;
 
   var RULES = {
-    version: '2026-06-11-addon-inline-1',
+    version: '2026-06-11-addon-inline-uxpolish-1',
     enabled: true,
     vehicles: [
       { id:'manipulator_5t',  category:'manipulator', name:'Манипулятор г/п до 5 т.',  short_name:'Манипулятор 5 т',  payload_kg:5000,  tile_pallet_capacity:6,  curb_pallet_capacity:6,  enabled:true },
       { id:'manipulator_11t', category:'manipulator', name:'Манипулятор г/п до 11 т.', short_name:'Манипулятор 11 т', payload_kg:11000, tile_pallet_capacity:8,  curb_pallet_capacity:8,  enabled:true },
       { id:'manipulator_15t', category:'manipulator', name:'Манипулятор г/п до 15 т.', short_name:'Манипулятор 15 т', payload_kg:15000, tile_pallet_capacity:12, curb_pallet_capacity:12, enabled:true },
       { id:'manipulator_20t', category:'manipulator', name:'Манипулятор г/п до 20 т.', short_name:'Манипулятор 20 т', payload_kg:20000, tile_pallet_capacity:14, curb_pallet_capacity:12, enabled:true },
-      { id:'flatbed_21t',     category:'flatbed',     name:'Бортовой длинномер г/п до 21 т.', short_name:'Длинномер 21 т', payload_kg:21000, tile_pallet_capacity:20, curb_pallet_capacity:20, enabled:true },
+      { id:'flatbed_21t',     category:'flatbed',     name:'Бортовой длинномер г/п до 21 т.', short_name:'Длинномер 21 т', payload_kg:21500, tile_pallet_capacity:20, curb_pallet_capacity:20, enabled:true },
       { id:'flatbed_22t',     category:'flatbed',     name:'Бортовой длинномер г/п до 22 т.', short_name:'Длинномер 22 т', payload_kg:22000, tile_pallet_capacity:20, curb_pallet_capacity:20, enabled:true },
       { id:'flatbed_25t',     category:'flatbed',     name:'Бортовой длинномер г/п до 25 т.', short_name:'Длинномер 25 т', payload_kg:25000, tile_pallet_capacity:20, curb_pallet_capacity:20, enabled:true }
     ]
   };
 
   var selectedVehicleId = '';
+  var detailsOpen = false;
   var lastResult = null;
   var timer = null;
   var observer = null;
@@ -44,13 +45,13 @@
     var css = document.createElement('style');
     css.id = 'paverLogisticsAddonStyle';
     css.textContent = [
-      '.paverLogisticsAddon{margin:14px 0;padding:14px;border:1px solid rgba(31,107,58,.24);border-radius:18px;background:linear-gradient(180deg,rgba(31,107,58,.075),rgba(255,255,255,.98));box-shadow:0 10px 24px rgba(0,0,0,.07);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));}',
-      '.paverLogisticsAddon *{box-sizing:border-box}.paverLogisticsAddon__head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}.paverLogisticsAddon__title{font-size:17px;font-weight:950;line-height:1.12}.paverLogisticsAddon__hint{font-size:12.8px;line-height:1.28;color:var(--pcM,rgba(0,0,0,.62));margin-top:4px}.paverLogisticsAddon__badge{font-size:11px;font-weight:900;border-radius:999px;padding:6px 9px;white-space:nowrap;background:rgba(31,107,58,.13);color:#1f6b3a}.paverLogisticsAddon__badge--manual{background:rgba(27,116,255,.12);color:#1b74ff}',
-      '.paverLogisticsAddon__placeholder{border:1px dashed rgba(0,0,0,.18);border-radius:14px;padding:11px;font-size:13px;line-height:1.35;color:var(--pcM,rgba(0,0,0,.64));background:#fff}.paverLogisticsAddon__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}.paverLogisticsAddon__metric{padding:10px;border:1px solid rgba(0,0,0,.08);border-radius:14px;background:#fff}.paverLogisticsAddon__metric span{display:block;font-size:11.5px;color:var(--pcM,rgba(0,0,0,.62));line-height:1.1}.paverLogisticsAddon__metric b{display:block;margin-top:5px;font-size:15px;font-weight:950;line-height:1.1}',
-      '.paverLogisticsAddon__vehicle{border:1px solid rgba(0,0,0,.08);border-radius:16px;background:#fff;padding:11px;margin-top:9px}.paverLogisticsAddon__vehicleTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.paverLogisticsAddon__vehicleName{font-size:14px;font-weight:950;line-height:1.15}.paverLogisticsAddon__trips{font-size:13px;font-weight:950;color:#1f6b3a;white-space:nowrap}',
-      '.paverLogisticsAddon__bars{margin-top:9px;display:flex;flex-direction:column;gap:7px}.paverLogisticsAddon__barRow{display:grid;grid-template-columns:64px 1fr 48px;gap:8px;align-items:center;font-size:12px;color:rgba(0,0,0,.68)}.paverLogisticsAddon__bar{height:8px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}.paverLogisticsAddon__bar i{display:block;height:100%;border-radius:999px;background:#1f6b3a}.paverLogisticsAddon__bar--warn i{background:#b87400}',
-      '.paverLogisticsAddon__control{display:flex;gap:8px;margin-top:10px}.paverLogisticsAddon__select{flex:1;min-width:0;height:38px;border:1px solid rgba(0,0,0,.16);border-radius:12px;padding:0 10px;font:inherit;font-size:13px;background:#fff}.paverLogisticsAddon__btn{height:38px;border:1px solid rgba(0,0,0,.16);border-radius:12px;background:#fff;padding:0 11px;font:inherit;font-size:12.5px;font-weight:900;cursor:pointer}.paverLogisticsAddon__details{display:none;margin-top:10px;overflow:auto}.paverLogisticsAddon.is-open .paverLogisticsAddon__details{display:block}.paverLogisticsAddon__table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;overflow:hidden}.paverLogisticsAddon__table th,.paverLogisticsAddon__table td{padding:7px 8px;border-bottom:1px solid rgba(0,0,0,.06);text-align:left;white-space:nowrap}.paverLogisticsAddon__table th{font-weight:900;color:rgba(0,0,0,.62);background:rgba(0,0,0,.03)}.paverLogisticsAddon__table tr.is-selected td{background:rgba(31,107,58,.08);font-weight:800}',
-      '@media(max-width:760px){.paverLogisticsAddon{padding:12px;border-radius:16px}.paverLogisticsAddon__head{flex-direction:column}.paverLogisticsAddon__grid{grid-template-columns:1fr}.paverLogisticsAddon__control{flex-direction:column}.paverLogisticsAddon__select,.paverLogisticsAddon__btn{width:100%}.paverLogisticsAddon__barRow{grid-template-columns:56px 1fr 44px}}'
+      '.paverLogisticsAddon{margin:16px 0;padding:16px;border:1px solid rgba(31,107,58,.22);border-radius:20px;background:linear-gradient(180deg,rgba(31,107,58,.055),rgba(255,255,255,.98));box-shadow:0 8px 22px rgba(0,0,0,.055);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));max-width:100%;overflow:hidden}',
+      '.paverLogisticsAddon *{box-sizing:border-box}.paverLogisticsAddon button{-webkit-tap-highlight-color:transparent}.paverLogisticsAddon__head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.paverLogisticsAddon__title{font-size:18px;font-weight:950;line-height:1.15}.paverLogisticsAddon__hint{font-size:13px;line-height:1.35;color:var(--pcM,rgba(0,0,0,.62));margin-top:5px;max-width:520px}.paverLogisticsAddon__badge{font-size:11.5px;font-weight:900;border-radius:999px;padding:7px 10px;white-space:nowrap;background:rgba(31,107,58,.13);color:#1f6b3a}.paverLogisticsAddon__badge--manual{background:rgba(27,116,255,.12);color:#1b74ff}',
+      '.paverLogisticsAddon__placeholder{border:1px dashed rgba(0,0,0,.16);border-radius:15px;padding:12px;font-size:13.5px;line-height:1.4;color:var(--pcM,rgba(0,0,0,.64));background:#fff}.paverLogisticsAddon__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.paverLogisticsAddon__metric{padding:11px;border:1px solid rgba(0,0,0,.075);border-radius:15px;background:#fff;min-width:0}.paverLogisticsAddon__metric span{display:block;font-size:12px;color:var(--pcM,rgba(0,0,0,.62));line-height:1.15}.paverLogisticsAddon__metric b{display:block;margin-top:5px;font-size:17px;font-weight:950;line-height:1.1}',
+      '.paverLogisticsAddon__vehicle{border:1px solid rgba(0,0,0,.08);border-radius:17px;background:#fff;padding:13px;margin-top:10px}.paverLogisticsAddon__vehicleTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.paverLogisticsAddon__vehicleName{font-size:16px;font-weight:950;line-height:1.18}.paverLogisticsAddon__trips{font-size:15px;font-weight:950;color:#1f6b3a;white-space:nowrap}.paverLogisticsAddon__bars{margin-top:11px;display:flex;flex-direction:column;gap:8px}.paverLogisticsAddon__barRow{display:grid;grid-template-columns:70px 1fr 50px;gap:8px;align-items:center;font-size:12.5px;color:rgba(0,0,0,.68)}.paverLogisticsAddon__bar{height:9px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}.paverLogisticsAddon__bar i{display:block;height:100%;border-radius:999px;background:#1f6b3a;max-width:100%}.paverLogisticsAddon__bar--warn i{background:#b87400}',
+      '.paverLogisticsAddon__actions{display:flex;gap:8px;margin-top:12px}.paverLogisticsAddon__btn{min-height:42px;border:1px solid rgba(0,0,0,.14);border-radius:14px;background:#fff;padding:0 13px;font:inherit;font-size:13.5px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.paverLogisticsAddon__btn:hover{border-color:rgba(31,107,58,.38)}.paverLogisticsAddon__btn:active{transform:translateY(1px)}.paverLogisticsAddon__btnPrimary{background:#1f6b3a;color:#fff;border-color:#1f6b3a}.paverLogisticsAddon__details{display:none;margin-top:12px}.paverLogisticsAddon.is-open .paverLogisticsAddon__details{display:block}.paverLogisticsAddon__micro{font-size:12.5px;line-height:1.35;color:rgba(0,0,0,.6);margin-top:9px}',
+      '.paverLogisticsAddon__options{display:grid;grid-template-columns:1fr;gap:8px}.paverLogisticsAddon__option{width:100%;border:1px solid rgba(0,0,0,.1);border-radius:15px;background:#fff;text-align:left;padding:11px;cursor:pointer;font:inherit;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.paverLogisticsAddon__option:hover{border-color:rgba(31,107,58,.36)}.paverLogisticsAddon__option.is-selected{border-color:rgba(31,107,58,.42);background:rgba(31,107,58,.07)}.paverLogisticsAddon__optionName{font-size:14.5px;font-weight:900;line-height:1.2}.paverLogisticsAddon__optionMeta{margin-top:5px;font-size:12.2px;color:rgba(0,0,0,.62);line-height:1.25}.paverLogisticsAddon__optionTrips{font-size:14px;font-weight:950;color:#1f6b3a;white-space:nowrap}.paverLogisticsAddon__tag{display:inline-block;border-radius:999px;background:rgba(31,107,58,.1);color:#1f6b3a;font-size:11.5px;font-weight:850;padding:3px 7px;margin-left:6px}',
+      '@media(max-width:760px){.paverLogisticsAddon{padding:13px;border-radius:18px;margin:12px 0}.paverLogisticsAddon__head{display:block}.paverLogisticsAddon__badge{display:inline-block;margin-top:10px}.paverLogisticsAddon__grid{grid-template-columns:1fr}.paverLogisticsAddon__vehicleTop{display:block}.paverLogisticsAddon__trips{margin-top:6px}.paverLogisticsAddon__actions{flex-direction:column}.paverLogisticsAddon__btn{width:100%}.paverLogisticsAddon__barRow{grid-template-columns:60px 1fr 44px}.paverLogisticsAddon__option{grid-template-columns:1fr}.paverLogisticsAddon__optionTrips{margin-top:3px}}'
     ].join('');
     document.head.appendChild(css);
   }
@@ -89,9 +90,7 @@
       if (!el) { el = document.createElement('input'); el.type = 'hidden'; el.name = name; f.appendChild(el); }
     });
   }
-  function setHidden(name, value){
-    qAll('[name="' + name + '"]').forEach(function(el){ el.value = value == null ? '' : String(value); });
-  }
+  function setHidden(name, value){ qAll('[name="' + name + '"]').forEach(function(el){ el.value = value == null ? '' : String(value); }); }
 
   function normalizePosition(p){
     if (!p) return null;
@@ -157,24 +156,13 @@
     var payload = Math.max(1, num(v.payload_kg));
     var tripsByWeight = Math.max(1, Math.ceil((s.total_weight_kg || 0) / payload));
     var trips = Math.max(tripsByPallet, tripsByWeight);
-    return {
-      vehicle:v, trips:trips,
-      trips_by_pallets:tripsByPallet, trips_by_weight:tripsByWeight,
-      pallet_utilization: trips ? palRatio / trips : 0,
-      weight_utilization: trips ? (s.total_weight_kg / payload) / trips : 0,
-      payload_kg:payload,
-      tile_capacity_per_trip:tileCap,
-      curb_capacity_per_trip:curbCap,
-      limiting: tripsByWeight > tripsByPallet ? 'weight' : 'pallets'
-    };
+    return { vehicle:v, trips:trips, trips_by_pallets:tripsByPallet, trips_by_weight:tripsByWeight, pallet_utilization: trips ? palRatio / trips : 0, weight_utilization: trips ? (s.total_weight_kg / payload) / trips : 0, payload_kg:payload, tile_capacity_per_trip:tileCap, curb_capacity_per_trip:curbCap, limiting: tripsByWeight > tripsByPallet ? 'weight' : 'pallets' };
   }
   function analyze(){
     var d = getPositions();
     var s = summarize(d.positions);
     var vehicles = (RULES.vehicles || []).filter(function(v){ return v && v.enabled !== false; });
-    var options = vehicles.map(function(v){ return optionForVehicle(v, s); }).sort(function(a,b){
-      return (a.trips - b.trips) || ((a.vehicle.category === 'manipulator' ? 0 : 1) - (b.vehicle.category === 'manipulator' ? 0 : 1)) || (a.payload_kg - b.payload_kg);
-    });
+    var options = vehicles.map(function(v){ return optionForVehicle(v, s); }).sort(function(a,b){ return (a.trips - b.trips) || ((a.vehicle.category === 'manipulator' ? 0 : 1) - (b.vehicle.category === 'manipulator' ? 0 : 1)) || (a.payload_kg - b.payload_kg); });
     var recommended = options[0] || null, selected = recommended;
     if (selectedVehicleId) options.forEach(function(o){ if (o.vehicle.id === selectedVehicleId) selected = o; });
     return { addon_version:VERSION, enabled:RULES.enabled !== false, source:d.source, positions:d.positions, summary:s, options:options, recommended:recommended, selected:selected };
@@ -184,64 +172,80 @@
     var s = res.summary || {}, sel = res.selected, text = '';
     if (sel && s.total_pallets) text = 'Логистика: ' + (sel.vehicle.name || sel.vehicle.id) + ', рейсов: ' + sel.trips + ', поддонов: ' + fmt(s.total_pallets,0) + ', вес: ' + fmtKg(s.total_weight_kg);
     setHidden('order_logistics_text', text);
-    setHidden('order_logistics_json', text ? JSON.stringify(res) : '');
+    setHidden('order_logistics_json', text ? JSON.stringify({ summary:s, selected:sel, source:res.source, addon_version:VERSION }) : '');
     setHidden('order_logistics_vehicle', sel && text ? (sel.vehicle.id || '') : '');
     setHidden('order_logistics_trips', sel && text ? sel.trips : '');
   }
+  function sourceText(src){ return src === 'cart' ? 'по корзине' : 'по текущему расчету'; }
   function render(){
     var box = ensureBox(); if (!box) return;
+    var wasOpen = detailsOpen || box.classList.contains('is-open');
     var res = analyze(); lastResult = res; syncHidden(res);
     if (!res.enabled) { box.innerHTML = '<div class="paverLogisticsAddon__head"><div><div class="paverLogisticsAddon__title">Логистика</div><div class="paverLogisticsAddon__hint">Расчет логистики отключен.</div></div></div>'; return; }
     if (!res.summary.total_pallets || !res.selected) {
-      box.innerHTML = '<div class="paverLogisticsAddon__head"><div><div class="paverLogisticsAddon__title">Логистика по поддонам</div><div class="paverLogisticsAddon__hint">Блок активен. Выберите позицию и площадь — транспорт появится автоматически.</div></div><div class="paverLogisticsAddon__badge">готово</div></div><div class="paverLogisticsAddon__placeholder">Расчет транспорта будет выполнен по количеству поддонов и весу. Стоимость доставки не включается в итог и согласуется менеджером.</div>';
+      box.classList.remove('is-open'); detailsOpen = false;
+      box.innerHTML = '<div class="paverLogisticsAddon__head"><div><div class="paverLogisticsAddon__title">Логистика</div><div class="paverLogisticsAddon__hint">Выберите позицию и площадь — транспорт рассчитается автоматически. Стоимость доставки не включается в итог.</div></div><div class="paverLogisticsAddon__badge">готово</div></div><div class="paverLogisticsAddon__placeholder">Расчет будет выполнен по поддонам и весу. Менеджер увидит выбранный транспорт в заявке.</div>';
       return;
     }
     var s=res.summary, sel=res.selected, rec=res.recommended, v=sel.vehicle;
     var manual = rec && rec.vehicle && rec.vehicle.id !== v.id;
     var palPct = Math.min(100, Math.round(sel.pallet_utilization * 100));
     var weightPct = Math.min(100, Math.round(sel.weight_utilization * 100));
-    var sourceLabel = res.source === 'cart' ? 'по корзине' : 'по текущему расчету';
-    var optsHtml = res.options.map(function(o){
-      var label = (o.vehicle.short_name || o.vehicle.name || o.vehicle.id) + ' — ' + o.trips + ' рейс.' + (rec && rec.vehicle && o.vehicle.id === rec.vehicle.id ? ' · рекомендовано' : '');
-      return '<option value="' + esc(o.vehicle.id) + '" ' + (o.vehicle.id === v.id ? 'selected' : '') + '>' + esc(label) + '</option>';
+    var optionsHtml = res.options.map(function(o){
+      var isSel = o.vehicle.id === v.id;
+      var isRec = rec && rec.vehicle && o.vehicle.id === rec.vehicle.id;
+      return '<button type="button" class="paverLogisticsAddon__option' + (isSel ? ' is-selected' : '') + '" data-vehicle-id="' + esc(o.vehicle.id) + '"><div><div class="paverLogisticsAddon__optionName">' + esc(o.vehicle.short_name || o.vehicle.name) + (isRec ? '<span class="paverLogisticsAddon__tag">рекомендовано</span>' : '') + '</div><div class="paverLogisticsAddon__optionMeta">Поддоны: ' + esc(fmtPct(o.pallet_utilization)) + ' · вес: ' + esc(fmtPct(o.weight_utilization)) + ' · вместимость: ' + o.tile_capacity_per_trip + '/' + o.curb_capacity_per_trip + ' подд.</div></div><div class="paverLogisticsAddon__optionTrips">' + o.trips + ' рейс.</div></button>';
     }).join('');
-    var rows = res.options.map(function(o){
-      return '<tr' + (o.vehicle.id === v.id ? ' class="is-selected"' : '') + '><td>' + esc(o.vehicle.short_name || o.vehicle.name) + '</td><td>' + o.trips + '</td><td>' + esc(fmtPct(o.pallet_utilization)) + '</td><td>' + esc(fmtPct(o.weight_utilization)) + '</td><td>' + o.tile_capacity_per_trip + ' / ' + o.curb_capacity_per_trip + '</td></tr>';
-    }).join('');
-    box.innerHTML = '<div class="paverLogisticsAddon__head"><div><div class="paverLogisticsAddon__title">Логистика по поддонам</div><div class="paverLogisticsAddon__hint">Расчет ' + esc(sourceLabel) + '. Транспорт подбирается по вместимости поддонов и весу.</div></div><div class="paverLogisticsAddon__badge ' + (manual ? 'paverLogisticsAddon__badge--manual' : '') + '">' + (manual ? 'выбрано вручную' : 'авто-рекомендация') + '</div></div>' +
-      '<div class="paverLogisticsAddon__grid"><div class="paverLogisticsAddon__metric"><span>Поддоны всего</span><b>' + fmt(s.total_pallets,0) + ' шт.</b></div><div class="paverLogisticsAddon__metric"><span>Плитка / бордюр</span><b>' + fmt(s.tile_pallets,0) + ' / ' + fmt(s.curb_pallets,0) + '</b></div><div class="paverLogisticsAddon__metric"><span>Вес заказа</span><b>' + fmtKg(s.total_weight_kg) + '</b></div></div>' +
+    box.className = 'paverLogisticsAddon' + (wasOpen ? ' is-open' : '');
+    detailsOpen = wasOpen;
+    box.innerHTML = '<div class="paverLogisticsAddon__head"><div><div class="paverLogisticsAddon__title">Логистика</div><div class="paverLogisticsAddon__hint">Расчет ' + esc(sourceText(res.source)) + ': подбираем транспорт по поддонам и весу.</div></div><div class="paverLogisticsAddon__badge ' + (manual ? 'paverLogisticsAddon__badge--manual' : '') + '">' + (manual ? 'выбрано вручную' : 'авто-рекомендация') + '</div></div>' +
+      '<div class="paverLogisticsAddon__grid"><div class="paverLogisticsAddon__metric"><span>Поддоны</span><b>' + fmt(s.total_pallets,0) + ' шт.</b></div><div class="paverLogisticsAddon__metric"><span>Плитка / бордюр</span><b>' + fmt(s.tile_pallets,0) + ' / ' + fmt(s.curb_pallets,0) + '</b></div><div class="paverLogisticsAddon__metric"><span>Вес</span><b>' + fmtKg(s.total_weight_kg) + '</b></div></div>' +
       '<div class="paverLogisticsAddon__vehicle"><div class="paverLogisticsAddon__vehicleTop"><div class="paverLogisticsAddon__vehicleName">' + esc(v.name || v.id) + '</div><div class="paverLogisticsAddon__trips">' + sel.trips + ' рейс(ов)</div></div><div class="paverLogisticsAddon__bars"><div class="paverLogisticsAddon__barRow"><span>Поддоны</span><div class="paverLogisticsAddon__bar"><i style="width:' + palPct + '%"></i></div><b>' + fmtPct(sel.pallet_utilization) + '</b></div><div class="paverLogisticsAddon__barRow"><span>Вес</span><div class="paverLogisticsAddon__bar ' + (sel.limiting === 'weight' ? 'paverLogisticsAddon__bar--warn' : '') + '"><i style="width:' + weightPct + '%"></i></div><b>' + fmtPct(sel.weight_utilization) + '</b></div></div></div>' +
-      '<div class="paverLogisticsAddon__control"><select class="paverLogisticsAddon__select" data-role="paverLogisticsVehicleSelect">' + optsHtml + '</select><button type="button" class="paverLogisticsAddon__btn" data-role="paverLogisticsDetailsToggle">Варианты</button></div>' +
-      '<div class="paverLogisticsAddon__hint">Вместимость за 1 рейс: плитка ' + sel.tile_capacity_per_trip + ' подд., бордюр ' + sel.curb_capacity_per_trip + ' подд.; грузоподъемность ' + fmtKg(sel.payload_kg) + '. Для смешанного заказа загрузка считается как сумма долей по типам.</div>' +
-      '<div class="paverLogisticsAddon__details"><table class="paverLogisticsAddon__table"><thead><tr><th>Транспорт</th><th>Рейсы</th><th>Поддоны</th><th>Вес</th><th>Плитка/бордюр</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
-    var select = box.querySelector('[data-role="paverLogisticsVehicleSelect"]');
-    if (select) select.onchange = function(){ selectedVehicleId = select.value || ''; try { sessionStorage.setItem('paver_logistics_addon_vehicle', selectedVehicleId); } catch(e) {} schedule(true); };
+      '<div class="paverLogisticsAddon__actions"><button type="button" class="paverLogisticsAddon__btn paverLogisticsAddon__btnPrimary" data-role="paverLogisticsDetailsToggle">' + (wasOpen ? 'Скрыть варианты' : 'Выбрать другой транспорт') + '</button></div>' +
+      '<div class="paverLogisticsAddon__micro">За 1 рейс: плитка ' + sel.tile_capacity_per_trip + ' подд., бордюр ' + sel.curb_capacity_per_trip + ' подд.; грузоподъемность ' + fmtKg(sel.payload_kg) + '. Доставка согласуется менеджером.</div>' +
+      '<div class="paverLogisticsAddon__details"><div class="paverLogisticsAddon__options">' + optionsHtml + '</div></div>';
+    bindBoxEvents(box);
+  }
+  function bindBoxEvents(box){
     var btn = box.querySelector('[data-role="paverLogisticsDetailsToggle"]');
-    if (btn) btn.onclick = function(){ box.classList.toggle('is-open'); };
+    if (btn) btn.onclick = function(e){ if (e) { e.preventDefault(); e.stopPropagation(); } detailsOpen = !detailsOpen; render(); };
+    Array.prototype.slice.call(box.querySelectorAll('[data-vehicle-id]')).forEach(function(el){
+      el.onclick = function(e){ if (e) { e.preventDefault(); e.stopPropagation(); } selectedVehicleId = el.getAttribute('data-vehicle-id') || ''; try { sessionStorage.setItem('paver_logistics_addon_vehicle', selectedVehicleId); } catch(err) {} detailsOpen = false; render(); };
+    });
   }
   function schedule(force){
     if (timer && !force) return;
     clearTimeout(timer);
-    timer = setTimeout(function(){ timer = null; try { render(); } catch(e) { console.error('[PaverLogisticsAddon] render failed', e); } }, force ? 20 : 160);
+    timer = setTimeout(function(){ timer = null; try { render(); } catch(e) { console.error('[PaverLogisticsAddon] render failed', e); } }, force ? 30 : 180);
   }
   function bind(){
     ensureBox();
     if (!observer) {
       var r = root();
       if (r && window.MutationObserver) {
-        try { observer = new MutationObserver(function(){ schedule(false); }); observer.observe(r, { childList:true, subtree:true, characterData:true, attributes:true }); } catch(e) {}
+        try {
+          observer = new MutationObserver(function(muts){
+            for (var i=0;i<muts.length;i++) {
+              var t = muts[i].target;
+              if (t && t.closest && t.closest('[data-role="paverLogisticsAddon"]')) continue;
+              schedule(false); return;
+            }
+          });
+          observer.observe(r, { childList:true, subtree:true, characterData:true, attributes:true });
+        } catch(e) {}
       }
     }
-    if (!window.__PAVER_LOGISTICS_ADDON_EVENTS) {
-      window.__PAVER_LOGISTICS_ADDON_EVENTS = true;
-      ['click','input','change'].forEach(function(evt){ document.addEventListener(evt, function(){ setTimeout(function(){ schedule(true); }, 80); }, true); });
-      setInterval(function(){ ensureBox(); schedule(false); }, 700);
+    if (!window.__PAVER_LOGISTICS_ADDON_EVENTS_UX) {
+      window.__PAVER_LOGISTICS_ADDON_EVENTS_UX = true;
+      ['input','change'].forEach(function(evt){ document.addEventListener(evt, function(e){ if (e && e.target && e.target.closest && e.target.closest('[data-role="paverLogisticsAddon"]')) return; setTimeout(function(){ schedule(true); }, 100); }, true); });
+      document.addEventListener('click', function(e){ if (e && e.target && e.target.closest && e.target.closest('[data-role="paverLogisticsAddon"]')) return; setTimeout(function(){ schedule(false); }, 180); }, true);
+      setInterval(function(){ ensureBox(); schedule(false); }, 900);
     }
   }
   window.PaverLogisticsAddon = {
     version: VERSION,
     recalc: function(){ schedule(true); return lastResult || analyze(); },
-    diagnose: function(){ var d = getPositions(); return { addon_version:VERSION, embed_version:window.__paverConfiguratorEmbedVersion || '', box:!!q('[data-role="paverLogisticsAddon"]'), source:d.source, positions:d.positions, result:lastResult || analyze() }; },
+    diagnose: function(){ var d = getPositions(); return { addon_version:VERSION, embed_version:window.__paverConfiguratorEmbedVersion || '', box:!!q('[data-role="paverLogisticsAddon"]'), open:detailsOpen, source:d.source, positions:d.positions, result:lastResult || analyze() }; },
     getResult: function(){ return lastResult || analyze(); }
   };
   function start(){ bind(); schedule(true); setTimeout(function(){ schedule(true); }, 500); setTimeout(function(){ schedule(true); }, 1500); }
