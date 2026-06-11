@@ -28,7 +28,7 @@
 
 <script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js?v=20260611-clean-base-1"></script>
 
-<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-logistics-module.js?v=20260611-single-logistics-module-1"></script>
+<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-logistics-module.js?v=20260611-single-logistics-ui-polish-1"></script>
 ```
 
 ## Проверка в консоли
@@ -41,5 +41,5 @@ window.PaverLogisticsSingle.diagnose()
 Ожидаемая версия логистики:
 
 ```text
-paver-logistics-single-module-20260611-1
+paver-logistics-single-module-ui-polish-20260611-1
 ```
