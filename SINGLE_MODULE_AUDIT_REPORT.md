@@ -1,45 +1,13 @@
-# Audit report — single logistics module build
-
-## Result
+# Audit report
 
 Status: passed.
 
-## Architecture
-
-- Main calculator: `paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js`
-- Logistics: `paver-logistics-module.js`
-- External logistics config: removed. Transport rules are inline inside the single logistics module.
-
-## Removed from clean build
-
-- `paver-logistics-addon-final.js`
-- `paver-logistics-above-cart-v2.js`
-- `logistics_rules.json`
-- duplicate logistics render layers
-- old report/debug/backend/admin artifacts
-- system junk files
-
-## Safety
-
-The logistics module reads only already calculated values:
-
-- cart positions from `window.__pcCart.positions`
-- current calculation fallback from existing DOM roles
-- pallets
-- order weight
-- tile/curb type
-
-It does not change product prices, discounts, pallet pricing, cart totals, or Tilda submission logic. It only adds separate hidden logistics fields for manager context.
-
-## Validation
-
-- JSON files: valid
-- Main JS syntax: valid
-- Logistics JS syntax: valid
-- Junk files: none found
-- Duplicate logistics files: none found
-- External logistics dependency: none
-
-## Tilda
-
-Use only two scripts: the stable calculator and `paver-logistics-module.js`.
+- Main calculator JS syntax: ok.
+- Logistics module JS syntax: ok.
+- Price JSON: valid.
+- Logistics module is one file: `paver-logistics-module.js`.
+- No external logistics JSON dependency.
+- No legacy logistics addon files in the package.
+- Logistics placement: before `.pcCart[data-role="cartBlock"]`, never inside cart.
+- Default state: collapsed.
+- UI fix: title, mode badge, vehicle, trips and pallet/weight badge are separated into stable flex/grid rows.

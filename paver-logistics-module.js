@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  var VERSION = 'paver-logistics-single-module-ui-polish-20260611-1';
+  var VERSION = 'paver-logistics-single-module-layoutfix-20260611-1';
   var MODULE_KEY = '__PAVER_LOGISTICS_SINGLE_MODULE__';
   // Stop previous logistics modules to prevent mixed layers.
   ['__PAVER_LOGISTICS_CLEAN__','__PAVER_LOGISTICS_ADDON__','__PAVER_LOGISTICS_ABOVE_CART_V2__','__PAVER_LOGISTICS_SINGLE_MODULE__'].forEach(function(k){ if (k !== MODULE_KEY && window[k] && typeof window[k].destroy === 'function') { try { window[k].destroy(); } catch (_) {} } });
@@ -75,14 +75,19 @@
     style.id = 'paverLogisticsSingleModuleStyle';
     style.textContent = [
       '[data-role="paverLogisticsAddon"],.paverLogisticsAddon,[data-role="paverLogisticsClean"],[data-role="paverLogisticsAboveCartV2"],[data-role="paverLogisticsSingle"]:not([data-version="' + VERSION + '"]){display:none!important}',
-      '.plcBox{margin:16px 0 14px;padding:0;border:1px solid rgba(31,107,58,.22);border-radius:18px;background:linear-gradient(180deg,rgba(31,107,58,.045),rgba(255,255,255,.98));box-shadow:0 8px 22px rgba(0,0,0,.045);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));max-width:100%;overflow:hidden}',
-      '.plcCollapsed{width:100%;border:0;background:transparent;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) 46px;align-items:center;gap:14px;cursor:pointer;text-align:left;font:inherit;color:inherit;min-height:78px}.plcCollapsedMain{min-width:0;display:grid;grid-template-rows:auto auto;gap:8px}.plcCollapsedTitle{display:block;font-size:20px;font-weight:950;line-height:1.12;letter-spacing:-.02em;white-space:normal}.plcCollapsedRow{min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:7px;align-items:start}.plcCollapsedSub{display:block;min-width:0;font-size:13.5px;color:rgba(0,0,0,.62);line-height:1.32;white-space:normal;overflow-wrap:anywhere}.plcCollapsedTripLine{display:block;margin-top:2px;font-size:13.5px;font-weight:900;color:rgba(0,0,0,.78);line-height:1.25}.plcCollapsedBadge{justify-self:start;max-width:100%;min-height:34px;border-radius:999px;padding:0 13px;display:inline-flex;align-items:center;justify-content:center;text-align:center;background:rgba(31,107,58,.12);color:#1f6b3a;font-size:12.5px;font-weight:950;line-height:1.15;white-space:normal}.plcCollapsedBadgeManual{background:rgba(27,116,255,.12);color:#1b74ff}.plcChevron{width:46px;height:46px;border-radius:999px;border:1px solid rgba(31,107,58,.2);background:#fff;display:grid;place-items:center;color:#1f6b3a;transition:transform .16s ease;justify-self:center;align-self:center;flex:0 0 46px;font-size:0;line-height:0;padding:0}.plcChevron:before{content:"";display:block;width:11px;height:11px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg) translate(-1px,-2px);transform-origin:center}.plcBox.isPanelOpen .plcChevron{transform:rotate(180deg)}.plcPanel{padding:0 16px 16px}.plcDivider{height:1px;background:rgba(0,0,0,.07);margin:0 16px 12px}',
-      '.plcBox,.plcBox *{box-sizing:border-box}.plcBox button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.plcHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.plcTitle{font-size:18px;font-weight:950;line-height:1.15}.plcHint{font-size:13px;line-height:1.35;color:rgba(0,0,0,.62);margin-top:5px;max-width:560px}.plcBadge{font-size:11.5px;font-weight:900;border-radius:999px;padding:7px 10px;background:rgba(31,107,58,.13);color:#1f6b3a;white-space:nowrap}.plcBadgeManual{background:rgba(27,116,255,.12);color:#1b74ff}',
-      '.plcPlaceholder{border:1px dashed rgba(0,0,0,.16);border-radius:15px;padding:12px;font-size:13.5px;line-height:1.4;color:rgba(0,0,0,.64);background:#fff}.plcMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.plcMetric{padding:11px;border:1px solid rgba(0,0,0,.075);border-radius:15px;background:#fff;min-width:0}.plcMetric span{display:block;font-size:12px;color:rgba(0,0,0,.62);line-height:1.15}.plcMetric b{display:block;margin-top:5px;font-size:17px;font-weight:950;line-height:1.1}',
+      '.plcBox{margin:14px 0 16px;padding:0;border:1px solid rgba(31,107,58,.22);border-radius:18px;background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.045);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));max-width:100%;overflow:hidden;box-sizing:border-box}',
+      '.plcBox,.plcBox *{box-sizing:border-box}.plcBox button{-webkit-tap-highlight-color:transparent;touch-action:manipulation;font-family:inherit}',
+      '.plcCollapsed{width:100%;border:0;background:linear-gradient(180deg,rgba(31,107,58,.04),rgba(255,255,255,.98));padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) 46px;align-items:center;gap:14px;cursor:pointer;text-align:left;font:inherit;color:inherit;min-height:82px}',
+      '.plcCollapsedMain{min-width:0;display:flex;flex-direction:column;gap:8px;align-items:flex-start}.plcTitleLine{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;width:100%}.plcCollapsedTitle{display:block;font-size:21px;font-weight:950;line-height:1.05;letter-spacing:-.025em;white-space:normal}.plcModeBadge{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;padding:0 12px;background:rgba(31,107,58,.11);color:#1f6b3a;font-size:12px;font-weight:950;line-height:1;white-space:nowrap}.plcModeBadgeManual{background:rgba(27,116,255,.12);color:#1b74ff}',
+      '.plcSummaryLine{display:flex;flex-direction:column;gap:4px;min-width:0;width:100%}.plcCollapsedSub{display:block;min-width:0;font-size:14px;color:rgba(0,0,0,.66);line-height:1.32;white-space:normal;overflow-wrap:anywhere}.plcCollapsedTripLine{display:block;font-size:14px;font-weight:900;color:rgba(0,0,0,.82);line-height:1.25;white-space:normal}.plcCollapsedBadge{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;min-height:32px;border-radius:999px;padding:0 12px;background:rgba(31,107,58,.12);color:#1f6b3a;font-size:13px;font-weight:950;line-height:1;white-space:nowrap}',
+      '.plcChevron{width:46px;height:46px;border-radius:999px;border:1px solid rgba(31,107,58,.22);background:#fff;display:grid;place-items:center;color:#1f6b3a;transition:transform .16s ease;justify-self:center;align-self:center;font-size:0;line-height:0;padding:0;box-shadow:0 2px 7px rgba(0,0,0,.035)}.plcChevron:before{content:"";display:block;width:10px;height:10px;border-right:2.4px solid currentColor;border-bottom:2.4px solid currentColor;transform:rotate(45deg);transform-origin:center;margin-top:-3px}.plcBox.isPanelOpen .plcChevron{transform:rotate(180deg)}.plcDivider{height:1px;background:rgba(0,0,0,.07);margin:0 16px 12px}.plcPanel{padding:0 16px 16px;background:linear-gradient(180deg,rgba(31,107,58,.025),rgba(255,255,255,1))}',
+      '.plcHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.plcHint{font-size:13px;line-height:1.35;color:rgba(0,0,0,.62);margin-top:2px;max-width:560px}.plcPlaceholder{border:1px dashed rgba(0,0,0,.16);border-radius:15px;padding:12px;font-size:13.5px;line-height:1.4;color:rgba(0,0,0,.64);background:#fff}',
+      '.plcMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.plcMetric{padding:11px;border:1px solid rgba(0,0,0,.075);border-radius:15px;background:#fff;min-width:0}.plcMetric span{display:block;font-size:12px;color:rgba(0,0,0,.62);line-height:1.15}.plcMetric b{display:block;margin-top:5px;font-size:17px;font-weight:950;line-height:1.1}',
       '.plcVehicle{border:1px solid rgba(0,0,0,.08);border-radius:17px;background:#fff;padding:13px;margin-top:10px}.plcVehicleTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.plcVehicleName{font-size:16px;font-weight:950;line-height:1.18}.plcTrips{font-size:15px;font-weight:950;color:#1f6b3a;white-space:nowrap}.plcBars{margin-top:11px;display:flex;flex-direction:column;gap:8px}.plcBarRow{display:grid;grid-template-columns:70px 1fr 50px;gap:8px;align-items:center;font-size:12.5px;color:rgba(0,0,0,.68)}.plcBar{height:9px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}.plcBar i{display:block;height:100%;border-radius:999px;background:#1f6b3a;max-width:100%}.plcBarWarn i{background:#b87400}',
       '.plcActions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.plcBtn{min-height:42px;border:1px solid rgba(0,0,0,.14);border-radius:14px;background:#fff;padding:0 13px;font:inherit;font-size:13.5px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.plcBtn:hover{border-color:rgba(31,107,58,.38)}.plcBtn:active{transform:translateY(1px)}.plcBtnPrimary{background:#1f6b3a;color:#fff;border-color:#1f6b3a}.plcDetails{display:none;margin-top:12px}.plcBox.isOpen .plcDetails{display:block}.plcMicro{font-size:12.5px;line-height:1.35;color:rgba(0,0,0,.6);margin-top:9px}',
       '.plcOptions{display:grid;grid-template-columns:1fr;gap:8px}.plcOption{width:100%;border:1px solid rgba(0,0,0,.1);border-radius:15px;background:#fff;text-align:left;padding:11px;cursor:pointer;font:inherit;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.plcOption:hover{border-color:rgba(31,107,58,.36)}.plcOption.isSelected{border-color:rgba(31,107,58,.42);background:rgba(31,107,58,.07)}.plcOptionName{font-size:14.5px;font-weight:900;line-height:1.2}.plcOptionMeta{margin-top:5px;font-size:12.2px;color:rgba(0,0,0,.62);line-height:1.25}.plcOptionTrips{font-size:14px;font-weight:950;color:#1f6b3a;white-space:nowrap}.plcTag{display:inline-block;border-radius:999px;background:rgba(31,107,58,.12);color:#1f6b3a;padding:3px 7px;margin-left:7px;font-size:10.5px;font-weight:950;vertical-align:middle}',
-      '@media(max-width:760px){.plcCollapsed{grid-template-columns:minmax(0,1fr) 46px;gap:12px;padding:15px 14px;min-height:86px}.plcCollapsedTitle{font-size:20px}.plcCollapsedSub,.plcCollapsedTripLine{font-size:13px}.plcCollapsedBadge{min-height:32px;padding:0 12px;font-size:12.5px}.plcChevron{width:46px;height:46px}.plcBox{border-radius:18px}.plcHead{display:block}.plcBadge{display:inline-flex;margin-top:9px}.plcMetrics{grid-template-columns:1fr;gap:7px}.plcMetric{display:flex;justify-content:space-between;gap:12px;align-items:center}.plcMetric b{margin-top:0;font-size:16px;text-align:right}.plcVehicleTop{align-items:flex-start}.plcBarRow{grid-template-columns:62px 1fr 44px}.plcActions{display:grid;grid-template-columns:1fr}.plcBtn{width:100%}.plcOption{grid-template-columns:1fr}.plcOptionTrips{white-space:normal;justify-self:start;margin-top:2px}}@media(max-width:520px){.plcCollapsed{align-items:center}.plcCollapsedRow{grid-template-columns:1fr;gap:7px}.plcCollapsedBadge{justify-self:start;white-space:normal;text-align:left}}@media(max-width:420px){.plcCollapsed{padding:14px 12px;grid-template-columns:minmax(0,1fr) 42px}.plcCollapsedTitle{font-size:19px}.plcCollapsedSub,.plcCollapsedTripLine{font-size:12.5px}.plcChevron{width:42px;height:42px}.plcCollapsedBadge{font-size:12px}}'
+      '@media(max-width:760px){.plcBox{border-radius:18px}.plcCollapsed{grid-template-columns:minmax(0,1fr) 44px;gap:12px;padding:15px 14px;min-height:92px}.plcCollapsedTitle{font-size:20px}.plcModeBadge{min-height:26px;font-size:11.5px;padding:0 10px}.plcCollapsedSub,.plcCollapsedTripLine{font-size:13.5px}.plcCollapsedBadge{font-size:12.5px;min-height:30px}.plcChevron{width:44px;height:44px}.plcMetrics{grid-template-columns:1fr;gap:7px}.plcMetric{display:flex;justify-content:space-between;gap:12px;align-items:center}.plcMetric b{margin-top:0;font-size:16px;text-align:right}.plcBarRow{grid-template-columns:62px 1fr 44px}.plcActions{display:grid;grid-template-columns:1fr}.plcBtn{width:100%}.plcOption{grid-template-columns:1fr}.plcOptionTrips{white-space:normal;justify-self:start;margin-top:2px}}',
+      '@media(max-width:520px){.plcCollapsed{grid-template-columns:minmax(0,1fr) 42px;gap:10px;padding:14px 12px}.plcTitleLine{display:flex;flex-direction:column;align-items:flex-start;gap:6px}.plcCollapsedBadge{white-space:normal;text-align:left;line-height:1.15;padding-top:7px;padding-bottom:7px}.plcChevron{width:42px;height:42px}.plcCollapsedTitle{font-size:19px}}'
     ].join('');
     document.head.appendChild(style);
   }
@@ -106,18 +111,28 @@
     var r = root();
     if (!r || !box) return false;
 
-    // Primary position: directly ABOVE the cart block, not inside it and not after it.
-    // This keeps logistics visually separate from the cart and prevents layer conflicts.
-    var cart = q('[data-role="cartBlock"]') || q('.pcCart');
-    if (cart && cart.parentNode && cart !== box && !box.contains(cart)) {
-      if (cart.previousElementSibling !== box) cart.parentNode.insertBefore(box, cart);
-      return true;
+    // Remove old logistics containers that could be left inside cart from previous versions.
+    qa('[data-role="paverLogisticsAddon"], [data-role="paverLogisticsClean"], [data-role="paverLogisticsAboveCartV2"]').forEach(function(el){
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    });
+
+    // Strict position: in the right column, immediately before the cart block.
+    // Never append inside .pcCart / [data-role="cartBlock"].
+    var cart = r.querySelector('[data-role="cartBlock"], .pcCart');
+    if (cart) {
+      var rightCol = cart.closest('.pcLayout__right') || cart.parentNode;
+      if (rightCol && rightCol !== box && !box.contains(rightCol)) {
+        if (box.parentNode !== rightCol || box.nextElementSibling !== cart) {
+          rightCol.insertBefore(box, cart);
+        }
+        return true;
+      }
     }
 
-    // Fallback while the calculator/cart is still rendering: keep the module near the calculation area.
-    var fallback = q('[data-role="previewBlock"]') || q('[data-role="calcBlock"]') || r.lastElementChild;
-    if (fallback && fallback.parentNode && fallback !== box && !box.contains(fallback)) {
-      if (fallback.nextSibling !== box) fallback.parentNode.insertBefore(box, fallback.nextSibling);
+    // Fallback: after calculation card, still outside cart.
+    var calc = r.querySelector('.pcCalc, [data-role="calcBlock"], [data-role="previewBlock"]');
+    if (calc && calc.parentNode && calc !== box && !box.contains(calc)) {
+      if (calc.nextSibling !== box) calc.parentNode.insertBefore(box, calc.nextSibling);
       return true;
     }
 
@@ -246,24 +261,30 @@
     var s = res.summary || {};
     var sel = res.selected;
     var hasData = !!(s.total_pallets && sel);
-    var sub = hasData
-      ? ('Рекомендация: ' + (sel.vehicle.short_name || sel.vehicle.name || sel.vehicle.id))
-      : 'Расчёт транспорта по поддонам и весу';
-    var tripsLine = hasData ? (sel.trips + ' рейс(ов)') : '';
+    var vehicleName = hasData ? (sel.vehicle.short_name || sel.vehicle.name || sel.vehicle.id) : 'транспорт подберётся автоматически';
+    var tripsLine = hasData ? (sel.trips + ' рейс(ов)') : 'откроется после выбора позиции';
     var badge = hasData ? (fmtInt(s.total_pallets) + ' подд. · ' + fmtKg(s.total_weight_kg)) : 'скрыто';
     box.className = 'plcBox';
+    box.setAttribute('data-version', VERSION);
     box.innerHTML = '' +
       '<button type="button" class="plcCollapsed" data-plc-action="panel-toggle" aria-expanded="false">' +
-        '<span class="plcCollapsedMain"><span class="plcCollapsedTitle">Логистика</span><span class="plcCollapsedRow"><span class="plcCollapsedSub">' + esc(sub) + (tripsLine ? '<span class="plcCollapsedTripLine">' + esc(tripsLine) + '</span>' : '') + '</span><span class="plcCollapsedBadge">' + esc(badge) + '</span></span></span>' +
+        '<span class="plcCollapsedMain">' +
+          '<span class="plcTitleLine"><span class="plcCollapsedTitle">Логистика</span><span class="plcModeBadge">Рекомендация по транспорту</span></span>' +
+          '<span class="plcSummaryLine"><span class="plcCollapsedSub">' + esc(vehicleName) + '</span><span class="plcCollapsedTripLine">' + esc(tripsLine) + '</span><span class="plcCollapsedBadge">' + esc(badge) + '</span></span>' +
+        '</span>' +
         '<span class="plcChevron" aria-hidden="true"></span>' +
       '</button>';
   }
 
   function renderEmpty(box){
     box.className = 'plcBox isPanelOpen';
+    box.setAttribute('data-version', VERSION);
     box.innerHTML = '' +
       '<button type="button" class="plcCollapsed" data-plc-action="panel-toggle" aria-expanded="true">' +
-        '<span class="plcCollapsedMain"><span class="plcCollapsedTitle">Логистика</span><span class="plcCollapsedRow"><span class="plcCollapsedSub">Расчёт транспорта по поддонам и весу</span><span class="plcCollapsedBadge">готово</span></span></span>' +
+        '<span class="plcCollapsedMain">' +
+          '<span class="plcTitleLine"><span class="plcCollapsedTitle">Логистика</span><span class="plcModeBadge">Рекомендация по транспорту</span></span>' +
+          '<span class="plcSummaryLine"><span class="plcCollapsedSub">Расчёт транспорта по поддонам и весу</span><span class="plcCollapsedTripLine">выберите позицию</span><span class="plcCollapsedBadge">готово</span></span>' +
+        '</span>' +
         '<span class="plcChevron" aria-hidden="true"></span>' +
       '</button><div class="plcDivider"></div><div class="plcPanel"><div class="plcPlaceholder">Выберите позицию и площадь. Блок не влияет на цены, скидки и товарную калькуляцию. Данные логистики отдельно попадут в заявку для менеджера.</div></div>';
   }
@@ -286,9 +307,13 @@
     }).join('');
 
     box.className = 'plcBox isPanelOpen' + (detailsOpen ? ' isOpen' : '');
+    box.setAttribute('data-version', VERSION);
     box.innerHTML = '' +
       '<button type="button" class="plcCollapsed" data-plc-action="panel-toggle" aria-expanded="true">' +
-        '<span class="plcCollapsedMain"><span class="plcCollapsedTitle">Логистика</span><span class="plcCollapsedRow"><span class="plcCollapsedSub">' + esc(v.short_name || v.name || v.id) + '<span class="plcCollapsedTripLine">' + esc(sel.trips + ' рейс(ов)') + '</span></span><span class="plcCollapsedBadge ' + (manual ? 'plcCollapsedBadgeManual' : '') + '">' + (manual ? 'Выбранный транспорт' : 'Рекомендация по транспорту') + '</span></span></span>' +
+        '<span class="plcCollapsedMain">' +
+          '<span class="plcTitleLine"><span class="plcCollapsedTitle">Логистика</span><span class="plcModeBadge ' + (manual ? 'plcModeBadgeManual' : '') + '">' + (manual ? 'Выбранный транспорт' : 'Рекомендация по транспорту') + '</span></span>' +
+          '<span class="plcSummaryLine"><span class="plcCollapsedSub">' + esc(v.short_name || v.name || v.id) + '</span><span class="plcCollapsedTripLine">' + esc(sel.trips + ' рейс(ов)') + '</span><span class="plcCollapsedBadge">' + esc(fmtInt(s.total_pallets) + ' подд. · ' + fmtKg(s.total_weight_kg)) + '</span></span>' +
+        '</span>' +
         '<span class="plcChevron" aria-hidden="true"></span>' +
       '</button><div class="plcDivider"></div><div class="plcPanel">' +
       '<div class="plcHead"><div><div class="plcHint">Расчёт ' + esc(sourceLabel(res.source)) + ': транспорт подбирается по вместимости поддонов и грузоподъёмности.</div></div></div>' +

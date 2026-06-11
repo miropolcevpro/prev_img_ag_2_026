@@ -1,45 +1,29 @@
-# Clean Single Logistics Module
+# Single Logistics Module — layout fix
 
-Чистовая сборка калькулятора с отдельным единым модулем логистики.
+Сборка содержит один отдельный модуль логистики:
 
-## Состав
+- `paver-logistics-module.js`
 
-- `paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js` — стабильный основной калькулятор без встроенной логистики.
-- `paver-logistics-module.js` — единственный модуль расчёта логистики.
-- `price_catalog.json`, `forms.json`, `palettes_*.json`, `technologies.json`, изображения — рабочие данные калькулятора.
+Основной калькулятор не содержит логистической логики. Модуль логистики подключается вторым script-тегом и монтируется строго над блоком корзины, не внутри корзины.
 
-## Удалено
-
-- `paver-logistics-addon-final.js`
-- `paver-logistics-above-cart-v2.js`
-- `logistics_rules.json`
-- старые audit/report/debug-файлы
-- backend/admin артефакты
-- временные файлы и системный мусор
-
-## Важно
-
-Правила транспорта встроены в `paver-logistics-module.js`. Модуль не зависит от `logistics_rules.json`, поэтому CDN/JSON-кэш не может сломать расчёт логистики.
-
-## Tilda snippet
+## Подключение Tilda
 
 ```html
 <div id="paverConf2026"></div>
 
 <script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js?v=20260611-clean-base-1"></script>
 
-<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-logistics-module.js?v=20260611-single-logistics-ui-polish-1"></script>
+<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-logistics-module.js?v=20260611-single-logistics-layoutfix-1"></script>
 ```
 
-## Проверка в консоли
+## Проверка
 
 ```js
-window.__paverConfiguratorEmbedVersion
 window.PaverLogisticsSingle.diagnose()
 ```
 
-Ожидаемая версия логистики:
+Ожидаемая версия:
 
 ```text
-paver-logistics-single-module-ui-polish-20260611-1
+paver-logistics-single-module-layoutfix-20260611-1
 ```
