@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "js_syntax_returncode": 0,
+  "js_syntax_stderr": "",
+  "json_ok": [
+    "DISCOUNT_RELEASE_REPORT_2026-06-04.json",
+    "palettes_stonemix.json",
+    "FIX_REPORT_2026-06-04-2.json",
+    "forms.json",
+    "palettes_mono.json",
+    "UPDATE_PRICE_REPORT_2026-06-03.json",
+    "technologies.json",
+    "DEPLOY_FIX_REPORT_2026-06-04.json",
+    "palettes_colormix.json",
+    "price_catalog.json",
+    "logistics_rules.json"
+  ],
+  "json_errors": [],
+  "checks": {
+    "embed_version": true,
+    "module": true,
+    "diagnose": true,
+    "inline_rules": true,
+    "no_bad_json_note": true,
+    "tilda_snippet": true
+  },
+  "file_count": 125,
+  "main_files": [
+    "README_DISCOUNT_DEPLOY_2026-06-04.txt",
+    "DISCOUNT_RELEASE_REPORT_2026-06-04.json",
+    "palettes_stonemix.json",
+    "FIX_REPORT_2026-06-04-2.json",
+    "README_DEPLOY.txt",
+    "paver-configurator-embed.js",
+    "forms.json",
+    "palettes_mono.json",
+    "UPDATE_PRICE_REPORT_2026-06-03.json",
+    "tilda-snippet.html",
+    "paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js",
+    "DISCOUNTS_DEPLOY_CHECK_2026-06-04-v4.txt",
+    "technologies.json",
+    "DEPLOY_FIX_REPORT_2026-06-04.json",
+    "palettes_colormix.json",
+    "paver-configurator-embed-safe-template-adaptive-final.js",
+    "price_catalog.json",
+    "paver-configurator-embed-safe-template-adaptive-final-pricefix.js",
+    "logistics_rules.json",
+    "tilda-snippet-logistics-final.html",
+    "LOGISTICS_FINAL_ENGINEERED_REPORT_2026-06-11.md"
+  ]
+}
