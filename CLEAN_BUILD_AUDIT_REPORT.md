@@ -1,67 +1,27 @@
-# Аудит clean-сборки логистики
+# Audit report
 
-Дата: 2026-06-11
+Build: CLEAN_LOGISTICS_ACCORDION_2026-06-11
 
-## Цель
+## Checks
 
-Собрать чистую стабильную версию калькулятора, где логистика работает отдельным модулем и не смешивается со слоями основного конфигуратора.
+- Main JS syntax: OK
+- Logistics module syntax: OK
+- price_catalog.json: valid JSON
+- logistics_rules.json: valid JSON
+- Legacy logistics addon files: absent
+- Vercel/backend/admin artifacts: absent
+- Junk files: absent
 
-## Что сделано
+## UX behavior
 
-- Взята стабильная версия основного калькулятора.
-- Удалены предыдущие логистические интеграции из основного JS за счёт отката к стабильному main JS без логистики.
-- Логистика вынесена в отдельный файл `paver-logistics-module.js`.
-- Удалены дубли JS-файлов, отчёты старых релизов, временные backend/admin-папки, `__MACOSX`, `__pycache__`, `.DS_Store`, `._*`.
-- Добавлен валидный `logistics_rules.json`.
-- Добавлен один snippet для Tilda: `tilda-snippet.html`.
+- Logistics block is collapsed by default.
+- Only the compact `Логистика` accordion header is visible.
+- Click on header opens the logistics panel.
+- Transport options are hidden by default inside the panel.
+- Click `Выбрать другой транспорт` opens stable card-based vehicle selection.
+- No `<select>` is used.
+- No horizontal options table is used.
 
-## Проверки
+## Isolation
 
-```text
-main JS syntax: ok
-logistics module syntax: ok
-price_catalog.json: valid
-logistics_rules.json: valid
-junk files: 0
-legacy logistics inside main JS: not found
-```
-
-## Архитектура
-
-```text
-Основной калькулятор:
-  paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js
-
-Отдельный модуль логистики:
-  paver-logistics-module.js
-
-Правила транспорта:
-  logistics_rules.json
-```
-
-## Изоляция логистики
-
-Логистика:
-
-- не меняет цены;
-- не меняет скидки;
-- не меняет расчёт поддонов;
-- не меняет основной submit;
-- читает уже рассчитанные `pallets` и `ship_weight_kg` из корзины или DOM;
-- записывает только отдельные hidden fields `order_logistics_*`.
-
-## Диагностика
-
-На опубликованной странице:
-
-```js
-window.__paverConfiguratorEmbedVersion
-window.PaverLogisticsClean.diagnose()
-```
-
-Ожидаемо:
-
-```text
-stable_clean_base_20260611_1
-paver-logistics-clean-20260611-1
-```
+The logistics module reads calculation/cart data and writes only logistics hidden fields. It does not modify product prices, discount rules, pallet pricing, cart pricing, or Tilda payload logic except adding logistics fields.

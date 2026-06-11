@@ -1,26 +1,26 @@
-# Clean logistics build — 2026-06-11
+# Clean Logistics Accordion Module
 
-Архив собран от стабильной версии калькулятора. Логистика вынесена в отдельный модуль `paver-logistics-module.js`.
+Стабильная чистая сборка калькулятора с отдельным модулем логистики.
 
-## Что важно
+## Что изменено
 
-- Основной калькулятор не содержит логистических вставок.
-- Логистика не меняет цены, скидки, поддоны и товарную калькуляцию.
-- Модуль читает уже рассчитанные поддоны и вес из DOM/корзины.
-- `logistics_rules.json` валиден и используется как внешний override.
-- Если `logistics_rules.json` не загрузится, модуль продолжит работать на встроенных правилах.
+- Основной калькулятор не изменяет логику цен, скидок, поддонов и Tilda-submit.
+- Логистика вынесена в отдельный файл `paver-logistics-module.js`.
+- Блок `Логистика` свернут по умолчанию.
+- При нажатии на заголовок `Логистика` раскрывается расчёт транспорта.
+- Варианты транспорта скрыты внутри раскрытого блока и открываются отдельной кнопкой `Выбрать другой транспорт`.
 
-## Подключение Tilda
+## Tilda snippet
 
 ```html
 <div id="paverConf2026"></div>
 
 <script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js?v=20260611-clean-base-1"></script>
 
-<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-logistics-module.js?v=20260611-clean-logistics-1"></script>
+<script src="https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-logistics-module.js?v=20260611-clean-logistics-accordion-1"></script>
 ```
 
-## Purge jsDelivr
+## Purge
 
 ```text
 https://purge.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/paver-configurator-embed-safe-template-adaptive-final-curbs-unified-v4.js
@@ -35,9 +35,8 @@ window.__paverConfiguratorEmbedVersion
 window.PaverLogisticsClean.diagnose()
 ```
 
-Ожидаемые версии:
+Ожидаемая версия логистики:
 
 ```text
-stable_clean_base_20260611_1
-paver-logistics-clean-20260611-1
+paver-logistics-accordion-20260611-1
 ```

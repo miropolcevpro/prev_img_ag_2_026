@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  var VERSION = 'paver-logistics-clean-20260611-1';
+  var VERSION = 'paver-logistics-accordion-20260611-1';
   var MODULE_KEY = '__PAVER_LOGISTICS_CLEAN__';
 
   // Stop an earlier copy of the same clean module if the page was re-rendered by Tilda.
@@ -34,6 +34,7 @@
   var rulesUrl = config.rulesUrl || resolveAssetUrl('logistics_rules.json');
   var rules = clone(DEFAULT_RULES);
   var selectedVehicleId = loadSession('paver_logistics_vehicle_id') || '';
+  var panelOpen = false;
   var detailsOpen = false;
   var renderTimer = 0;
   var pollTimer = 0;
@@ -86,13 +87,14 @@
     style.id = 'paverLogisticsCleanStyle';
     style.textContent = [
       '[data-role="paverLogisticsAddon"],.paverLogisticsAddon{display:none!important}',
-      '.plcBox{margin:16px 0;padding:16px;border:1px solid rgba(31,107,58,.22);border-radius:20px;background:linear-gradient(180deg,rgba(31,107,58,.055),rgba(255,255,255,.98));box-shadow:0 8px 22px rgba(0,0,0,.055);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));max-width:100%;overflow:hidden}',
+      '.plcBox{margin:12px 0;padding:0;border:1px solid rgba(31,107,58,.22);border-radius:18px;background:linear-gradient(180deg,rgba(31,107,58,.045),rgba(255,255,255,.98));box-shadow:0 8px 22px rgba(0,0,0,.045);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));max-width:100%;overflow:hidden}',
+      '.plcCollapsed{width:100%;border:0;background:transparent;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;text-align:left;font:inherit;color:inherit}.plcCollapsedMain{min-width:0}.plcCollapsedTitle{font-size:17px;font-weight:950;line-height:1.15}.plcCollapsedSub{font-size:12.5px;color:rgba(0,0,0,.58);line-height:1.25;margin-top:4px}.plcCollapsedMeta{display:flex;align-items:center;gap:8px;flex-shrink:0}.plcChevron{width:30px;height:30px;border-radius:999px;border:1px solid rgba(31,107,58,.18);background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#1f6b3a;transition:transform .16s ease}.plcBox.isPanelOpen .plcChevron{transform:rotate(180deg)}.plcPanel{padding:0 16px 16px}.plcDivider{height:1px;background:rgba(0,0,0,.07);margin:0 16px 12px}',
       '.plcBox,.plcBox *{box-sizing:border-box}.plcBox button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.plcHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.plcTitle{font-size:18px;font-weight:950;line-height:1.15}.plcHint{font-size:13px;line-height:1.35;color:rgba(0,0,0,.62);margin-top:5px;max-width:560px}.plcBadge{font-size:11.5px;font-weight:900;border-radius:999px;padding:7px 10px;background:rgba(31,107,58,.13);color:#1f6b3a;white-space:nowrap}.plcBadgeManual{background:rgba(27,116,255,.12);color:#1b74ff}',
       '.plcPlaceholder{border:1px dashed rgba(0,0,0,.16);border-radius:15px;padding:12px;font-size:13.5px;line-height:1.4;color:rgba(0,0,0,.64);background:#fff}.plcMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.plcMetric{padding:11px;border:1px solid rgba(0,0,0,.075);border-radius:15px;background:#fff;min-width:0}.plcMetric span{display:block;font-size:12px;color:rgba(0,0,0,.62);line-height:1.15}.plcMetric b{display:block;margin-top:5px;font-size:17px;font-weight:950;line-height:1.1}',
       '.plcVehicle{border:1px solid rgba(0,0,0,.08);border-radius:17px;background:#fff;padding:13px;margin-top:10px}.plcVehicleTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.plcVehicleName{font-size:16px;font-weight:950;line-height:1.18}.plcTrips{font-size:15px;font-weight:950;color:#1f6b3a;white-space:nowrap}.plcBars{margin-top:11px;display:flex;flex-direction:column;gap:8px}.plcBarRow{display:grid;grid-template-columns:70px 1fr 50px;gap:8px;align-items:center;font-size:12.5px;color:rgba(0,0,0,.68)}.plcBar{height:9px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}.plcBar i{display:block;height:100%;border-radius:999px;background:#1f6b3a;max-width:100%}.plcBarWarn i{background:#b87400}',
       '.plcActions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.plcBtn{min-height:42px;border:1px solid rgba(0,0,0,.14);border-radius:14px;background:#fff;padding:0 13px;font:inherit;font-size:13.5px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.plcBtn:hover{border-color:rgba(31,107,58,.38)}.plcBtn:active{transform:translateY(1px)}.plcBtnPrimary{background:#1f6b3a;color:#fff;border-color:#1f6b3a}.plcDetails{display:none;margin-top:12px}.plcBox.isOpen .plcDetails{display:block}.plcMicro{font-size:12.5px;line-height:1.35;color:rgba(0,0,0,.6);margin-top:9px}',
       '.plcOptions{display:grid;grid-template-columns:1fr;gap:8px}.plcOption{width:100%;border:1px solid rgba(0,0,0,.1);border-radius:15px;background:#fff;text-align:left;padding:11px;cursor:pointer;font:inherit;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.plcOption:hover{border-color:rgba(31,107,58,.36)}.plcOption.isSelected{border-color:rgba(31,107,58,.42);background:rgba(31,107,58,.07)}.plcOptionName{font-size:14.5px;font-weight:900;line-height:1.2}.plcOptionMeta{margin-top:5px;font-size:12.2px;color:rgba(0,0,0,.62);line-height:1.25}.plcOptionTrips{font-size:14px;font-weight:950;color:#1f6b3a;white-space:nowrap}.plcTag{display:inline-block;border-radius:999px;background:rgba(31,107,58,.12);color:#1f6b3a;padding:3px 7px;margin-left:7px;font-size:10.5px;font-weight:950;vertical-align:middle}',
-      '@media(max-width:640px){.plcBox{padding:14px;border-radius:18px}.plcHead{display:block}.plcBadge{display:inline-flex;margin-top:9px}.plcMetrics{grid-template-columns:1fr;gap:7px}.plcMetric{display:flex;justify-content:space-between;gap:12px;align-items:center}.plcMetric b{margin-top:0;font-size:16px;text-align:right}.plcVehicleTop{align-items:flex-start}.plcBarRow{grid-template-columns:62px 1fr 44px}.plcActions{display:grid;grid-template-columns:1fr}.plcBtn{width:100%}.plcOption{grid-template-columns:1fr}.plcOptionTrips{white-space:normal}}'
+      '@media(max-width:640px){.plcBox{border-radius:18px}.plcHead{display:block}.plcBadge{display:inline-flex;margin-top:9px}.plcMetrics{grid-template-columns:1fr;gap:7px}.plcMetric{display:flex;justify-content:space-between;gap:12px;align-items:center}.plcMetric b{margin-top:0;font-size:16px;text-align:right}.plcVehicleTop{align-items:flex-start}.plcBarRow{grid-template-columns:62px 1fr 44px}.plcActions{display:grid;grid-template-columns:1fr}.plcBtn{width:100%}.plcOption{grid-template-columns:1fr}.plcOptionTrips{white-space:normal}}'
     ].join('');
     document.head.appendChild(style);
   }
@@ -241,9 +243,29 @@
     setHidden('order_logistics_trips', sel.trips);
   }
 
-  function renderEmpty(box){
+  function renderCollapsed(box, res){
+    var s = res.summary || {};
+    var sel = res.selected;
+    var hasData = !!(s.total_pallets && sel);
+    var sub = hasData
+      ? ('Рекомендация: ' + (sel.vehicle.short_name || sel.vehicle.name || sel.vehicle.id) + ' · ' + sel.trips + ' рейс(ов)')
+      : 'Расчёт транспорта по поддонам и весу';
+    var badge = hasData ? (fmtInt(s.total_pallets) + ' подд. · ' + fmtKg(s.total_weight_kg)) : 'скрыто';
     box.className = 'plcBox';
-    box.innerHTML = '<div class="plcHead"><div><div class="plcTitle">Логистика</div><div class="plcHint">Выберите позицию и площадь. Транспорт рассчитается автоматически по поддонам и весу.</div></div><div class="plcBadge">готово</div></div><div class="plcPlaceholder">Блок не влияет на цены, скидки и товарную калькуляцию. Данные логистики отдельно попадут в заявку для менеджера.</div>';
+    box.innerHTML = '' +
+      '<button type="button" class="plcCollapsed" data-plc-action="panel-toggle" aria-expanded="false">' +
+        '<span class="plcCollapsedMain"><span class="plcCollapsedTitle">Логистика</span><span class="plcCollapsedSub">' + esc(sub) + '</span></span>' +
+        '<span class="plcCollapsedMeta"><span class="plcBadge">' + esc(badge) + '</span><span class="plcChevron" aria-hidden="true">⌄</span></span>' +
+      '</button>';
+  }
+
+  function renderEmpty(box){
+    box.className = 'plcBox isPanelOpen';
+    box.innerHTML = '' +
+      '<button type="button" class="plcCollapsed" data-plc-action="panel-toggle" aria-expanded="true">' +
+        '<span class="plcCollapsedMain"><span class="plcCollapsedTitle">Логистика</span><span class="plcCollapsedSub">Расчёт транспорта по поддонам и весу</span></span>' +
+        '<span class="plcCollapsedMeta"><span class="plcBadge">готово</span><span class="plcChevron" aria-hidden="true">⌄</span></span>' +
+      '</button><div class="plcDivider"></div><div class="plcPanel"><div class="plcPlaceholder">Выберите позицию и площадь. Блок не влияет на цены, скидки и товарную калькуляцию. Данные логистики отдельно попадут в заявку для менеджера.</div></div>';
   }
 
   function sourceLabel(src){ return src === 'cart' ? 'по корзине' : 'по текущему расчёту'; }
@@ -263,20 +285,24 @@
       return '<button type="button" class="plcOption' + (isSelected ? ' isSelected' : '') + '" data-plc-vehicle="' + esc(ov.id) + '"><div><div class="plcOptionName">' + esc(ov.short_name || ov.name || ov.id) + (isRecommended ? '<span class="plcTag">рекомендовано</span>' : '') + '</div><div class="plcOptionMeta">' + o.trips + ' рейс(ов) · поддоны ' + esc(fmtPct(o.pallet_utilization)) + ' · вес ' + esc(fmtPct(o.weight_utilization)) + ' · вместимость ' + esc(o.tile_capacity_per_trip) + '/' + esc(o.curb_capacity_per_trip) + ' подд.</div></div><div class="plcOptionTrips">' + o.trips + ' рейс.</div></button>';
     }).join('');
 
-    box.className = 'plcBox' + (detailsOpen ? ' isOpen' : '');
+    box.className = 'plcBox isPanelOpen' + (detailsOpen ? ' isOpen' : '');
     box.innerHTML = '' +
-      '<div class="plcHead"><div><div class="plcTitle">Логистика</div><div class="plcHint">Расчёт ' + esc(sourceLabel(res.source)) + ': транспорт подбирается по вместимости поддонов и грузоподъёмности.</div></div><div class="plcBadge ' + (manual ? 'plcBadgeManual' : '') + '">' + (manual ? 'выбрано вручную' : 'авто-рекомендация') + '</div></div>' +
+      '<button type="button" class="plcCollapsed" data-plc-action="panel-toggle" aria-expanded="true">' +
+        '<span class="plcCollapsedMain"><span class="plcCollapsedTitle">Логистика</span><span class="plcCollapsedSub">' + esc((v.short_name || v.name || v.id) + ' · ' + sel.trips + ' рейс(ов)') + '</span></span>' +
+        '<span class="plcCollapsedMeta"><span class="plcBadge ' + (manual ? 'plcBadgeManual' : '') + '">' + (manual ? 'выбрано' : 'авто') + '</span><span class="plcChevron" aria-hidden="true">⌄</span></span>' +
+      '</button><div class="plcDivider"></div><div class="plcPanel">' +
+      '<div class="plcHead"><div><div class="plcHint">Расчёт ' + esc(sourceLabel(res.source)) + ': транспорт подбирается по вместимости поддонов и грузоподъёмности.</div></div></div>' +
       '<div class="plcMetrics"><div class="plcMetric"><span>Поддоны всего</span><b>' + fmtInt(s.total_pallets) + ' шт.</b></div><div class="plcMetric"><span>Плитка / бордюр</span><b>' + fmtInt(s.tile_pallets) + ' / ' + fmtInt(s.curb_pallets) + '</b></div><div class="plcMetric"><span>Вес заказа</span><b>' + fmtKg(s.total_weight_kg) + '</b></div></div>' +
       '<div class="plcVehicle"><div class="plcVehicleTop"><div class="plcVehicleName">' + esc(v.name || v.id) + '</div><div class="plcTrips">' + sel.trips + ' рейс(ов)</div></div><div class="plcBars"><div class="plcBarRow"><span>Поддоны</span><div class="plcBar"><i style="width:' + palPct + '%"></i></div><b>' + fmtPct(sel.pallet_utilization) + '</b></div><div class="plcBarRow"><span>Вес</span><div class="plcBar ' + (sel.limiting === 'weight' ? 'plcBarWarn' : '') + '"><i style="width:' + weightPct + '%"></i></div><b>' + fmtPct(sel.weight_utilization) + '</b></div></div></div>' +
       '<div class="plcActions"><button type="button" class="plcBtn plcBtnPrimary" data-plc-action="toggle">' + (detailsOpen ? 'Скрыть варианты' : 'Выбрать другой транспорт') + '</button>' + (manual ? '<button type="button" class="plcBtn" data-plc-action="reset">Вернуть рекомендацию</button>' : '') + '</div>' +
       '<div class="plcMicro">За 1 рейс: плитка ' + sel.tile_capacity_per_trip + ' подд., бордюр ' + sel.curb_capacity_per_trip + ' подд.; грузоподъёмность ' + fmtKg(sel.payload_kg) + '. Стоимость доставки не включена в итог.</div>' +
-      '<div class="plcDetails"><div class="plcOptions">' + optionsHtml + '</div></div>';
+      '<div class="plcDetails"><div class="plcOptions">' + optionsHtml + '</div></div></div>';
   }
 
   function signatureOf(res){
     var s = res.summary || {};
     var selected = res.selected && res.selected.vehicle ? res.selected.vehicle.id : '';
-    return [res.source, s.tile_pallets, s.curb_pallets, s.total_pallets, s.total_weight_kg, selected, detailsOpen, rules.version].join('|');
+    return [res.source, s.tile_pallets, s.curb_pallets, s.total_pallets, s.total_weight_kg, selected, panelOpen, detailsOpen, rules.version].join('|');
   }
 
   function render(force){
@@ -290,6 +316,7 @@
     var sig = signatureOf(res);
     if (!force && sig === lastSignature) return;
     lastSignature = sig;
+    if (!panelOpen) { renderCollapsed(box, res); return; }
     if (!res.enabled || !res.summary.total_pallets || !res.selected) renderEmpty(box); else renderResult(box, res);
   }
 
@@ -312,8 +339,9 @@
     }
     if (action) {
       var a = action.getAttribute('data-plc-action');
+      if (a === 'panel-toggle') { panelOpen = !panelOpen; if (!panelOpen) detailsOpen = false; }
       if (a === 'toggle') detailsOpen = !detailsOpen;
-      if (a === 'reset') { selectedVehicleId = ''; saveSession('paver_logistics_vehicle_id', ''); detailsOpen = true; }
+      if (a === 'reset') { selectedVehicleId = ''; saveSession('paver_logistics_vehicle_id', ''); detailsOpen = true; panelOpen = true; }
       schedule(true);
       return;
     }
@@ -321,6 +349,7 @@
       selectedVehicleId = vehicle.getAttribute('data-plc-vehicle') || '';
       saveSession('paver_logistics_vehicle_id', selectedVehicleId);
       detailsOpen = false;
+      panelOpen = true;
       schedule(true);
     }
   }
@@ -383,6 +412,7 @@
         root: !!root(),
         rules_version: rules.version,
         selected_vehicle_id: selectedVehicleId,
+        panel_open: panelOpen,
         details_open: detailsOpen,
         result: lastResult || analyze()
       };
