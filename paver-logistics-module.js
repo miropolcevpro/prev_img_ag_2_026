@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  var VERSION = 'paver-logistics-headerfix-20260611-1';
+  var VERSION = 'paver-logistics-abovecart-20260611-1';
   var MODULE_KEY = '__PAVER_LOGISTICS_CLEAN__';
 
   // Stop an earlier copy of the same clean module if the page was re-rendered by Tilda.
@@ -87,7 +87,7 @@
     style.id = 'paverLogisticsCleanStyle';
     style.textContent = [
       '[data-role="paverLogisticsAddon"],.paverLogisticsAddon{display:none!important}',
-      '.plcBox{margin:12px 0;padding:0;border:1px solid rgba(31,107,58,.22);border-radius:18px;background:linear-gradient(180deg,rgba(31,107,58,.045),rgba(255,255,255,.98));box-shadow:0 8px 22px rgba(0,0,0,.045);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));max-width:100%;overflow:hidden}',
+      '.plcBox{margin:16px 0 14px;padding:0;border:1px solid rgba(31,107,58,.22);border-radius:18px;background:linear-gradient(180deg,rgba(31,107,58,.045),rgba(255,255,255,.98));box-shadow:0 8px 22px rgba(0,0,0,.045);font-family:inherit;color:var(--pcT,rgba(0,0,0,.92));max-width:100%;overflow:hidden}',
       '.plcCollapsed{width:100%;border:0;background:transparent;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) 46px;align-items:center;gap:14px;cursor:pointer;text-align:left;font:inherit;color:inherit;min-height:78px}.plcCollapsedMain{min-width:0;display:grid;grid-template-rows:auto auto;gap:8px}.plcCollapsedTitle{display:block;font-size:20px;font-weight:950;line-height:1.12;letter-spacing:-.02em;white-space:normal}.plcCollapsedRow{min-width:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.plcCollapsedSub{display:block;flex:1 1 230px;min-width:0;font-size:13.5px;color:rgba(0,0,0,.62);line-height:1.32;white-space:normal;overflow-wrap:anywhere}.plcCollapsedBadge{flex:0 0 auto;max-width:100%;min-height:34px;border-radius:999px;padding:0 13px;display:inline-flex;align-items:center;justify-content:center;text-align:center;background:rgba(31,107,58,.12);color:#1f6b3a;font-size:13px;font-weight:950;line-height:1.15;white-space:nowrap}.plcCollapsedBadgeManual{background:rgba(27,116,255,.12);color:#1b74ff}.plcChevron{width:46px;height:46px;border-radius:999px;border:1px solid rgba(31,107,58,.2);background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;line-height:1;color:#1f6b3a;transition:transform .16s ease;justify-self:center;align-self:center;flex:0 0 46px}.plcBox.isPanelOpen .plcChevron{transform:rotate(180deg)}.plcPanel{padding:0 16px 16px}.plcDivider{height:1px;background:rgba(0,0,0,.07);margin:0 16px 12px}',
       '.plcBox,.plcBox *{box-sizing:border-box}.plcBox button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.plcHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.plcTitle{font-size:18px;font-weight:950;line-height:1.15}.plcHint{font-size:13px;line-height:1.35;color:rgba(0,0,0,.62);margin-top:5px;max-width:560px}.plcBadge{font-size:11.5px;font-weight:900;border-radius:999px;padding:7px 10px;background:rgba(31,107,58,.13);color:#1f6b3a;white-space:nowrap}.plcBadgeManual{background:rgba(27,116,255,.12);color:#1b74ff}',
       '.plcPlaceholder{border:1px dashed rgba(0,0,0,.16);border-radius:15px;padding:12px;font-size:13.5px;line-height:1.4;color:rgba(0,0,0,.64);background:#fff}.plcMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.plcMetric{padding:11px;border:1px solid rgba(0,0,0,.075);border-radius:15px;background:#fff;min-width:0}.plcMetric span{display:block;font-size:12px;color:rgba(0,0,0,.62);line-height:1.15}.plcMetric b{display:block;margin-top:5px;font-size:17px;font-weight:950;line-height:1.1}',
@@ -114,15 +114,26 @@
 
   function setHidden(name, value){ var el = ensureHidden(name); if (el) el.value = value == null ? '' : String(value); }
 
-  function mountAfterTarget(box){
+  function placeBox(box){
     var r = root();
-    if (!r) return false;
-    var target = q('[data-role="cartBlock"]') || q('[data-role="previewBlock"]') || q('[data-role="calcBlock"]') || r.lastElementChild;
-    if (target && target.parentNode) {
-      target.parentNode.insertBefore(box, target.nextSibling);
+    if (!r || !box) return false;
+
+    // Primary position: directly ABOVE the cart block, not inside it and not after it.
+    // This keeps logistics visually separate from the cart and prevents layer conflicts.
+    var cart = q('[data-role="cartBlock"]') || q('.pcCart');
+    if (cart && cart.parentNode && cart !== box && !box.contains(cart)) {
+      if (cart.previousElementSibling !== box) cart.parentNode.insertBefore(box, cart);
       return true;
     }
-    r.appendChild(box);
+
+    // Fallback while the calculator/cart is still rendering: keep the module near the calculation area.
+    var fallback = q('[data-role="previewBlock"]') || q('[data-role="calcBlock"]') || r.lastElementChild;
+    if (fallback && fallback.parentNode && fallback !== box && !box.contains(fallback)) {
+      if (fallback.nextSibling !== box) fallback.parentNode.insertBefore(box, fallback.nextSibling);
+      return true;
+    }
+
+    if (box.parentNode !== r) r.appendChild(box);
     return true;
   }
 
@@ -136,8 +147,8 @@
       box.className = 'plcBox';
       box.setAttribute('data-role', 'paverLogisticsClean');
       box.setAttribute('data-version', VERSION);
-      mountAfterTarget(box);
     }
+    placeBox(box);
     return box;
   }
 
