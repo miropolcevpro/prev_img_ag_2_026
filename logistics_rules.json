@@ -1,14 +1,12 @@
 {
-  "version": "2026-06-11-addon-final-1",
+  "version": "2026-06-11-clean-rules-1",
   "enabled": true,
-  "currency": "RUB",
+  "mode": "pallet_capacity",
   "cost_mode": "manager_request",
-  "selection_mode": "auto_recommended_with_manual_override",
   "recommendation": {
-    "mode": "min_trips_then_smallest_payload",
-    "mixed_pallet_formula": "sum_of_type_ratios",
-    "manager_can_override": true,
-    "note": "Для смешанного заказа загрузка по поддонам считается как tile_pallets/tile_capacity + curb_pallets/curb_capacity. Количество рейсов = max(рейсы по поддонам, рейсы по весу)."
+    "strategy": "min_trips_then_manipulator_then_smallest_payload",
+    "mixed_formula": "tile_pallets/tile_capacity + curb_pallets/curb_capacity",
+    "note": "Для смешанного заказа загрузка по поддонам считается как сумма долей по типам. Количество рейсов равно максимуму между рейсами по поддонам и рейсами по весу."
   },
   "vehicles": [
     {
@@ -56,7 +54,7 @@
       "category": "flatbed",
       "name": "Бортовой длинномер г/п до 21 т.",
       "short_name": "Длинномер 21 т",
-      "payload_kg": 21000,
+      "payload_kg": 21500,
       "tile_pallet_capacity": 20,
       "curb_pallet_capacity": 20,
       "enabled": true
