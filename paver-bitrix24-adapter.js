@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'paver-bitrix24-adapter-20260615-1';
+  var VERSION = 'paver-bitrix24-adapter-20260615-2-ui-copy';
   if (window.__PaverBitrix24AdapterLoaded === VERSION) return;
   window.__PaverBitrix24AdapterLoaded = VERSION;
 
@@ -13,7 +13,9 @@
     loaderUrl: 'https://cdn-ru.bitrix24.ru/b10322535/crm/form/loader_10.js',
     useOwnModal: true,
     hideCalculatorLeadForm: true,
-    buttonText: 'Отправить расчёт',
+    buttonText: 'Отправить',
+    consentPrefix: 'Я даю согласие на обработку персональных данных в соответствии с ',
+    afterText: 'Мы свяжемся с вами для уточнения заказа.',
     source: 'Калькулятор на сайте Стройторг',
     privacyPolicyUrl: 'https://st-ru.com/policy/_1.0.6_index.php',
     privacyPolicyText: 'политикой конфиденциальности',
@@ -199,8 +201,9 @@
     style.id = 'paverBitrix24AdapterStyles';
     style.textContent = [
       '.pcB24Launch{margin-top:14px;padding:14px;border:1px solid rgba(0,0,0,.10);border-radius:14px;background:#fff;}',
-      '.pcB24Launch__title{font-size:16px;font-weight:900;color:rgba(0,0,0,.92);margin-bottom:6px;}',
-      '.pcB24Launch__text{font-size:12.5px;line-height:1.35;color:rgba(0,0,0,.62);margin-bottom:10px;}',
+      '.pcB24Launch__consent{font-size:12.5px;line-height:1.45;color:rgba(0,0,0,.68);margin-bottom:10px;}',
+      '.pcB24Launch__consent a{color:inherit;text-decoration:underline;text-underline-offset:2px;}',
+      '.pcB24Launch__after{font-size:12.5px;line-height:1.4;color:rgba(0,0,0,.62);margin-top:9px;text-align:center;}',
       '.pcB24Launch__button{display:flex;width:100%;min-height:44px;align-items:center;justify-content:center;border:0;border-radius:12px;background:#111;color:#fff;font:900 14px/1.2 Roboto,Arial,sans-serif;cursor:pointer;padding:11px 14px;text-align:center;}',
       '.pcB24Launch__button:disabled{opacity:.55;cursor:not-allowed;}',
       '.pcB24Modal{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.62);backdrop-filter:blur(5px);}',
@@ -223,9 +226,13 @@
     var block = document.createElement('div');
     block.id = 'paverBitrix24Launch';
     block.className = 'pcB24Launch';
-    block.innerHTML = '<div class="pcB24Launch__title">Отправить расчёт</div>' +
-      '<div class="pcB24Launch__text">Контактные данные будут отправлены вместе с составом заказа и итогами расчёта в Bitrix24.</div>' +
-      '<button type="button" class="pcB24Launch__button">' + config.buttonText + '</button>';
+    block.innerHTML = '<div class="pcB24Launch__consent">' +
+      config.consentPrefix +
+      '<a href="' + config.privacyPolicyUrl + '" target="_blank" rel="noopener noreferrer">' +
+      config.privacyPolicyText +
+      '</a></div>' +
+      '<button type="button" class="pcB24Launch__button">' + config.buttonText + '</button>' +
+      '<div class="pcB24Launch__after">' + config.afterText + '</div>';
 
     cart.insertAdjacentElement('afterend', block);
     block.querySelector('button').addEventListener('click', function () {
