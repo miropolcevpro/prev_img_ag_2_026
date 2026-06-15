@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  var VERSION = 'paver-logistics-single-shadow-autolayout-20260611-1';
+  var VERSION = 'paver-logistics-single-shadow-autolayout-20260611-disabled-ready-1';
   var MODULE_KEY = '__PAVER_LOGISTICS_SINGLE_MODULE__';
   var ROOT_ID = (window.PAVER_LOGISTICS_CONFIG && window.PAVER_LOGISTICS_CONFIG.mountRootId) || 'paverConf2026';
 
@@ -20,6 +20,51 @@
 
   if (window[MODULE_KEY] && typeof window[MODULE_KEY].destroy === 'function') {
     try { window[MODULE_KEY].destroy(); } catch (_) {}
+  }
+
+  // Безопасный флаг включения. По умолчанию модуль включён для обратной совместимости.
+  // Для временного отключения перед подключением файла задайте:
+  // window.PAVER_LOGISTICS_CONFIG = { enabled: false };
+  var MODULE_ENABLED = !(window.PAVER_LOGISTICS_CONFIG && window.PAVER_LOGISTICS_CONFIG.enabled === false);
+
+  function cleanupDisabledState(){
+    var selectors = [
+      '#paver-logistics-single-host',
+      '[data-role="paverLogisticsAddon"]',
+      '.paverLogisticsAddon',
+      '[data-role="paverLogisticsClean"]',
+      '[data-role="paverLogisticsAboveCartV2"]',
+      '[data-role="paverLogisticsSingle"]',
+      '[data-role="paverLogisticsSingleHost"]'
+    ].join(',');
+    document.querySelectorAll(selectors).forEach(function(el){
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    });
+    var style = document.getElementById('paverLogisticsGlobalGuardStyle');
+    if (style && style.parentNode) style.parentNode.removeChild(style);
+  }
+
+  if (!MODULE_ENABLED) {
+    cleanupDisabledState();
+    var disabledApi = {
+      version: VERSION,
+      enabled: false,
+      destroy: cleanupDisabledState,
+      render: function(){ cleanupDisabledState(); },
+      diagnose: function(){
+        return {
+          version: VERSION,
+          enabled: false,
+          host: false,
+          message: 'Логистический модуль безопасно отключён через PAVER_LOGISTICS_CONFIG.enabled=false'
+        };
+      }
+    };
+    window[MODULE_KEY] = disabledApi;
+    window.PaverLogisticsSingle = disabledApi;
+    window.PaverLogisticsClean = disabledApi;
+    window.PaverLogisticsPro = disabledApi;
+    return;
   }
 
   var RULES = {
