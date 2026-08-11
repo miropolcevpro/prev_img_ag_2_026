@@ -7,6 +7,9 @@
 - Основной файл Tilda: `paver-configurator-price-20260811-cachefix-v4.js`
 - Версия скрипта: `stable_price_20260811_cacheproof_4`
 - Версия ресурсов: `20260811-cacheproof-v4`
+- Основной адаптер Bitrix24: `paver-bitrix24-adapter-20260811-cachefix-v5.js`
+- Версия адаптера Bitrix24: `paver-bitrix24-adapter-20260811-cacheproof-5`
+- Cache-key каталога для Bitrix24: `20260811-bitrix-cacheproof-v5`
 - Дата прайса продукции: `2026-08-10`
 - Цена одного поддона: `457.50 ₽`
 - Логистика: отключена
@@ -164,6 +167,79 @@ window.__paverConfiguratorEmbedVersion
 ```
 
 На странице должен быть один актуальный основной скрипт. Если отображаются старая и новая ссылки одновременно, нужно удалить дублирующий T123-блок или старое подключение в шапке/подвале страницы.
+
+## Обновление на 1С-Битрикс / Aspro
+
+На сайте Стройторг калькулятор подключён через локальный файл:
+
+```text
+/local/include/paver-calculator-bitrix24.php
+```
+
+Этот include должен использовать тот же основной калькулятор и тот же `price_catalog.json`, что и Tilda. Отдельный прайс или отдельную копию логики расчёта для Bitrix создавать не нужно.
+
+При обновлении Bitrix нужно:
+
+1. Загрузить актуальные общие файлы калькулятора в корень внешнего репозитория.
+2. Загрузить новый cache-proof адаптер Bitrix24 с уникальным именем.
+3. Заменить содержимое `/local/include/paver-calculator-bitrix24.php` проверенной версией из архива.
+4. Не менять ID формы, код формы, маркеры CRM, ссылку на политику и состояние логистики без отдельной задачи.
+5. Очистить управляемый кэш Bitrix и композитный кэш.
+6. Выполнить полную перезагрузку страницы и проверить расчёт и отправку формы.
+
+Калькулятор должен отображаться только по адресу:
+
+```text
+/catalog/plitka_trotuarnaya_i_bordyury/plitka_trotuarnaya/
+```
+
+В `/catalog/index.php` нужно сохранять точное условие:
+
+```php
+$currentPage = $APPLICATION->GetCurPage(false);
+
+if ($currentPage === '/catalog/plitka_trotuarnaya_i_bordyury/plitka_trotuarnaya/') {
+    $APPLICATION->IncludeFile(
+        '/local/include/paver-calculator-bitrix24.php',
+        array(),
+        array(
+            'MODE' => 'php',
+            'NAME' => 'Калькулятор тротуарной плитки',
+            'SHOW_BORDER' => true
+        )
+    );
+}
+```
+
+Это условие нельзя удалять: общий `/catalog/index.php` обслуживает разделы и карточки товаров, поэтому без проверки URL калькулятор появится на лишних страницах.
+
+Для быстрой диагностики в консоли браузера:
+
+```js
+document.getElementById('paverConf2026')
+```
+
+```js
+window.PaverBitrix24Adapter?.diagnose()
+```
+
+```js
+window.PaverBitrix24Adapter?.sync()
+```
+
+После обновления ожидается:
+
+- контейнер калькулятора найден;
+- версия адаптера — `paver-bitrix24-adapter-20260811-cacheproof-5`;
+- `diagnose().root` равно `true`;
+- `diagnose().payload.priceVersion` соответствует актуальной дате прайса;
+- в payload передаются сумма, скидка, поддоны, вес и состав заказа;
+- логистика отображается как отключённая.
+
+Если изменялся PHP-файл или подключение Aspro, после очистки кэша выполнить:
+
+- Windows: `Ctrl + F5`;
+- macOS: `Cmd + Shift + R`.
 
 ## Минимальный контроль перед фиксацией версии
 
