@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'paver-bitrix24-adapter-20260615-2-ui-copy';
+  var VERSION = 'paver-bitrix24-adapter-20260811-pdf-verified-2';
   if (window.__PaverBitrix24AdapterLoaded === VERSION) return;
   window.__PaverBitrix24AdapterLoaded = VERSION;
 
@@ -19,7 +19,7 @@
     source: 'Калькулятор на сайте Стройторг',
     privacyPolicyUrl: 'https://st-ru.com/policy/_1.0.6_index.php',
     privacyPolicyText: 'политикой конфиденциальности',
-    catalogUrl: 'https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/price_catalog.json',
+    catalogUrl: 'https://cdn.jsdelivr.net/gh/miropolcevpro/prev_img_ag_2_026@main/price_catalog.json?v=20260811-pdf-price-v2',
     markers: {
       orderText: 'paver_order_text',
       orderJson: 'paver_order_json',

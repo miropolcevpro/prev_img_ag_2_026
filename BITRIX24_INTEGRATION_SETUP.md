@@ -59,7 +59,7 @@ window.PaverBitrix24Adapter.diagnose()
 
 Ожидается:
 
-- `version: "paver-bitrix24-adapter-20260615-1"`
+- `version: "paver-bitrix24-adapter-20260811-pdf-verified-2"`
 - `root: true`
 - `formId: 10`
 - после открытия формы `initializedForms >= 1`
